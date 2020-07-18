@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Net.Sockets;
 using System.IO;
 
@@ -99,13 +94,13 @@ namespace Stream_AFK_Text_Game
                     SWriter.Flush();
                 }
             }
-
         }
 
         static void GameInputs(string Msg)
         {
             Console.WriteLine(Msg);
         }
+
         #endregion
     }
 }
