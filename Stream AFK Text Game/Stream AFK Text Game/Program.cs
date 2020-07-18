@@ -11,6 +11,7 @@ namespace Stream_AFK_Text_Game
         static void Main(string[] args)
         {
             Twitch.LaunchConnection();
+            Console.ReadLine();
         }
     }
 }

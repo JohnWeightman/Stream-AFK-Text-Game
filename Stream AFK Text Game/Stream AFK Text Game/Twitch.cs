@@ -19,10 +19,13 @@ namespace Stream_AFK_Text_Game
         private static StreamReader SReader;
         private static StreamWriter SWriter;
 
+        #region Connect to Twitch
+
         public static void LaunchConnection()
         {
             GetTwitchDetails();
             ConnectToTwitch();
+            var timer = new System.Threading.Timer(e => ReadChat(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
         }
 
         static void GetTwitchDetails()
@@ -40,12 +43,14 @@ namespace Stream_AFK_Text_Game
             SReader = new StreamReader(TwitchClient.GetStream());
             SWriter = new StreamWriter(TwitchClient.GetStream());
             SWriter.WriteLine("PASS " + AuthKey);
-            SWriter.WriteLine("NICK " + "N\\A");
+            SWriter.WriteLine("NICK " + UserName.ToLower());
             SWriter.WriteLine("USER " + UserName + " 8 * :" + UserName);
-            SWriter.WriteLine("JOIN #" + DisplayName);
+            SWriter.WriteLine("JOIN #" + DisplayName.ToLower());
             SWriter.Flush();
             string Response = SReader.ReadLine();
             Console.WriteLine(Response);
+            string Response2 = SReader.ReadLine();
+            Console.WriteLine(Response2);
             if (Response.Contains("Welcome"))
             {
                 Console.WriteLine("Twitch: Connected");
@@ -53,11 +58,54 @@ namespace Stream_AFK_Text_Game
             else
             {
                 Console.WriteLine("Twitch: Failed to Connect");
+                return;
             }
-            string a = "PRIVMSG #" + DisplayName + " :" + "Test";
-            SWriter.WriteLine(a);
-            SWriter.Flush();
-            Console.ReadLine();
         }
+
+        #endregion
+
+        #region Write/Read Chat
+
+        public static void WriteToChat(string Msg)
+        {
+            SWriter.WriteLine("PRIVMSG #" + DisplayName.ToLower() + " :" + Msg);
+            SWriter.Flush();
+        }
+
+        static void ReadChat()
+        {
+            if (!TwitchClient.Connected)
+            {
+                ConnectToTwitch();
+                return;
+            }
+            if(TwitchClient.Available > 0)
+            {
+                var Msg = SReader.ReadLine();
+                Console.WriteLine(Msg);
+                if(Msg.Contains("PRIVMSG"))
+                {
+                    var splitPoint = Msg.IndexOf("!", 1);
+                    var chatName = Msg.Substring(0, splitPoint);
+                    chatName = chatName.Substring(1);
+                    splitPoint = Msg.IndexOf(":", 1);
+                    Msg = Msg.Substring(splitPoint + 1);
+                    if(Msg.Substring(0,1) == "!")
+                        GameInputs(Msg);
+                }
+                else if (Msg.Contains("PING"))
+                {
+                    SWriter.WriteLine("PONG :tmi.twitch.tv");
+                    SWriter.Flush();
+                }
+            }
+
+        }
+
+        static void GameInputs(string Msg)
+        {
+            Console.WriteLine(Msg);
+        }
+        #endregion
     }
 }
