@@ -9,14 +9,26 @@ namespace Stream_AFK_Text_Game
 {
     static class IO
     {
+        #region Player
+
+        #region Stats
+
         public static void PlayerName(string Name)
         {
-            File.WriteAllText("Stream Files\\1. Character Name.txt", Name);
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\1. Name.txt", Name);
         }
 
         public static string GetPlayerName()
         {
-            return File.ReadAllText("Stream FIles\\1. Character Name.txt");
+            return File.ReadAllText("Stream FIles\\Player\\1. Stats\\1. Name.txt");
         }
+
+        #endregion
+
+        #region Equipment
+
+        #endregion
+
+        #endregion
     }
 }
