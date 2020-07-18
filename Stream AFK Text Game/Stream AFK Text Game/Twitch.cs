@@ -25,7 +25,7 @@ namespace Stream_AFK_Text_Game
 
         static void GetTwitchDetails()
         {
-            Console.WriteLine("Twitch: Getting Details...");
+            Console.WriteLine("Twitch Client: Getting Details...");
             DisplayName = File.ReadAllText("Channel Details\\Display Name.txt");
             UserName = File.ReadAllText("Channel Details\\User Name.txt");
             AuthKey = File.ReadAllText("Channel Details\\Auth Key.txt");
@@ -33,7 +33,7 @@ namespace Stream_AFK_Text_Game
 
         static void ConnectToTwitch()
         {
-            Console.WriteLine("Twitch: Connecting...");
+            Console.WriteLine("Twitch Client: Connecting...");
             TwitchClient = new TcpClient("irc.chat.twitch.tv", 6667);
             SReader = new StreamReader(TwitchClient.GetStream());
             SWriter = new StreamWriter(TwitchClient.GetStream());
@@ -46,13 +46,13 @@ namespace Stream_AFK_Text_Game
             Console.WriteLine(Response);
             string Response2 = SReader.ReadLine();
             Console.WriteLine(Response2);
-            if (Response.Contains("Welcome"))
+            if (Response.Contains("Welcome, GLHF"))
             {
-                Console.WriteLine("Twitch: Connected");
+                Console.WriteLine("Twitch Client: Connected");
             }
             else
             {
-                Console.WriteLine("Twitch: Failed to Connect");
+                Console.WriteLine("Twitch Client: Failed to Connect");
                 return;
             }
         }

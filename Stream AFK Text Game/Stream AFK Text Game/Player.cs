@@ -11,8 +11,8 @@ namespace Stream_AFK_Text_Game
         string Name;
         int Level, HP, MaxHP, AC, Str, Dex, Con, StrMod, DexMod, ConMod, XP, LU, Stamina, StaminaMax;
         bool Dead;
-        Weapon Weapon = new Weapon();
-        Armour Armour = new Armour();
+        public Weapon Weapon = new Weapon();
+        public Armour Armour = new Armour();
 
         #region Get/Set Variables
 
@@ -275,6 +275,7 @@ namespace Stream_AFK_Text_Game
             Armour.UpdateArmourString("");
             Weapon.UpdateWeaponString("Shortsword");
             UpdatePlayerAC();
+            IO.Player(this);
         }
 
         #endregion

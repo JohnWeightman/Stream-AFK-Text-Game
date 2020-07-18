@@ -12,7 +12,10 @@ namespace Stream_AFK_Text_Game
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Environment: Loading GameObjects...");
             GameObjects.LoadGameObjects();
+            Console.WriteLine("Environment: Creating Character...");
+            Player.CreateCharacter();
             Twitch.LaunchConnection();
             Player.CreateCharacter();
             Console.ReadLine();

@@ -156,11 +156,9 @@ namespace Stream_AFK_Text_Game
 
     class Weapon
     {
-        public string Name = "Shortsword";
-        public int Damage = 6;
-        public bool TwoHanded = false;
-        public bool Versatile = false;
-        public int Cost = 0;
+        public string Name;
+        public int Damage, Cost;
+        public bool TwoHanded, Versatile;
 
         public void UpdateWeaponString(string NewWeapon)
         {
@@ -188,10 +186,8 @@ namespace Stream_AFK_Text_Game
 
     class Armour
     {
-        public string Name = "Leather";
-        public string Weight = "Light";
-        public int AC = 7;
-        public int Cost = 0;
+        public string Name, Weight;
+        public int AC, Cost;
 
         public void UpdateArmourString(string NewArmour)
         {
@@ -225,11 +221,8 @@ namespace Stream_AFK_Text_Game
 
     class Potions
     {
-        public string Name = "Weak Health Potion";
-        public int DiceNum = 2;
-        public int DiceSize = 4;
-        public int Modifier = 2;
-        public int Cost = 0;
+        public string Name;
+        public int DiceNum, DiceSize, Modifier, Cost;
 
         public int HealthRegen()
         {
