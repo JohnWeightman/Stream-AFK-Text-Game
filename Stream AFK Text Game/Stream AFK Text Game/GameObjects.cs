@@ -134,22 +134,22 @@ namespace Stream_AFK_Text_Game
 
         #region Combat Decision
 
-        //public byte CombatDecision()
-        //{
-        //    byte Decision = 0;
-        //    if (Stamina >= Player.FightOptionCosts[1])
-        //    {
-        //        if (Stamina / Player.FightOptionCosts[0] >= 2)
-        //            Decision = 0;
-        //        else if (Stamina < (Player.FightOptionCosts[1] * 2) && Stamina >= Player.FightOptionCosts[0])
-        //            Decision = 0;
-        //        else
-        //            Decision = 1;
-        //    }
-        //    else
-        //        Decision = 2;
-        //    return Decision;
-        //}
+        public byte CombatDecision()
+        {
+            byte Decision = 0;
+            if (Stamina >= Encounter.FightOptionCosts[1])
+            {
+                if (Stamina / Encounter.FightOptionCosts[0] >= 2)
+                    Decision = 0;
+                else if (Stamina < (Encounter.FightOptionCosts[1] * 2) && Stamina >= Encounter.FightOptionCosts[0])
+                    Decision = 0;
+                else
+                    Decision = 1;
+            }
+            else
+                Decision = 2;
+            return Decision;
+        }
 
         #endregion
     }

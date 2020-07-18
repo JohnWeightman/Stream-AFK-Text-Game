@@ -9,10 +9,11 @@ namespace Stream_AFK_Text_Game
     class Player
     {
         string Name;
-        int Level, HP, MaxHP, AC, Str, Dex, Con, StrMod, DexMod, ConMod, XP, LU, Stamina, StaminaMax;
+        int Level, HP, MaxHP, AC, Str, Dex, Con, StrMod, DexMod, ConMod, XP, LU, Stamina, StaminaMax, Initiative;
         bool Dead;
         public Weapon Weapon = new Weapon();
         public Armour Armour = new Armour();
+        public Inventorys Inventory = new Inventorys();
 
         #region Get/Set Variables
 
@@ -176,6 +177,16 @@ namespace Stream_AFK_Text_Game
             return Dead;
         }
 
+        public void SetInitiative(int NewIni)
+        {
+            Initiative = NewIni;
+        }
+
+        public int GetInitiative()
+        {
+            return Initiative;
+        }
+
         #endregion
 
         #region Update Stats
@@ -279,5 +290,18 @@ namespace Stream_AFK_Text_Game
         }
 
         #endregion
+    }
+
+    class Inventorys
+    {
+        public List<Potions> Potions = new List<Potions>();
+        int MaxItems = 10;
+        int CurrentItems = 0;
+
+        public void Clear()
+        {
+            Potions.Clear();
+            CurrentItems = 0;
+        }
     }
 }

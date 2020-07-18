@@ -54,6 +54,15 @@ namespace Stream_AFK_Text_Game
 
         #endregion
 
+        #region Game Mechanics
+
+        public static void GameUpdate(string Text)
+        {
+            File.WriteAllText("Stream Files\\Game Mechanics\\Game Updates.txt", Text);
+        }
+
+        #endregion
+
         #region Player
 
         #region Stats
