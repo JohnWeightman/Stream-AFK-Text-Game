@@ -93,7 +93,7 @@ namespace Stream_AFK_Text_Game
 
         public static void PlayerName(string Name)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\1. Name.txt", Name);
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\1. Name.txt", "Name: " + Name);
         }
 
         public static string GetPlayerName()
@@ -103,12 +103,12 @@ namespace Stream_AFK_Text_Game
 
         public static void PlayerLevel(int Level)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\2. Level.txt", Convert.ToString(Level));
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\2. Level.txt", "Level: " + Convert.ToString(Level));
         }
 
         public static void PlayerHP(int HP)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\3. HP.txt", Convert.ToString(HP));
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\3. HP.txt", "HP: " + Convert.ToString(HP) + "/");
         }
 
         public static void PlayerMaxHP(int MaxHP)
@@ -118,7 +118,7 @@ namespace Stream_AFK_Text_Game
 
         public static void PlayerAC(int AC)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\5. AC.txt", Convert.ToString(AC));
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\5. AC.txt", "AC: " + Convert.ToString(AC));
         }
 
         public static void PlayerStr(int Str)

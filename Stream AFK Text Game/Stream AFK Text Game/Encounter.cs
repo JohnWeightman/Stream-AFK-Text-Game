@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Stream_AFK_Text_Game
@@ -69,17 +70,18 @@ namespace Stream_AFK_Text_Game
 
         public static void StartEncounter(List<EnemyNPC> EncounterData)
         {
-            Player = Program.Player;
+            Player = MainClass.Player;
             foreach (EnemyNPC NPC in EncounterData)
                 EncounterNPCs.Add(NPC);
             SortFightOrder();
             string Update = "Your under attack!\n";
             foreach (EnemyNPC Enemy in EncounterNPCs)
                 Update += "\n" + Enemy.Name;
-            List<string> Options = new List<string> { "Continue" };
+            //List<string> Options = new List<string> { "Continue" };
             IO.GameUpdate(Update);
-            IO.Options(Options);
+            //IO.Options(Options);
             //int Input = Player.PlayerInputs(SE2.Count);
+            Thread.Sleep(5000);
             EncounterLoop();
         }
 
@@ -111,10 +113,11 @@ namespace Stream_AFK_Text_Game
         static void EncounterEnd()
         {
             string Update = "You won the fight!";
-            List<string> Options = new List<string>() { "Continue" };
+            //List<string> Options = new List<string>() { "Continue" };
             Events.NewEvent("EncounterWon", ES1: Player.GetName());
-            IO.Options(Options);
+            //IO.Options(Options);
             IO.GameUpdate(Update);
+            Thread.Sleep(5000);
             //int Input = Player.PlayerInputs(Options.Count);
             Update = "You won the fight!\n\nXP Earned: " + EncounterXP;
             IO.GameUpdate(Update);
@@ -125,6 +128,7 @@ namespace Stream_AFK_Text_Game
             IO.PlayerLU(Player.GetLU());
             IO.PlayerInventory(Player.Inventory);
             //Input = Player.PlayerInputs(Options.Count);
+            Thread.Sleep(5000);
             FightOrder.Clear();
         }
 
@@ -210,8 +214,8 @@ namespace Stream_AFK_Text_Game
                 EnemyList.Add(Enemy.Name);
             }
             IO.Options(EnemyList);
-            //int Input = Player.PlayerInputs(EnemyList.Count) - 1;
-            return 0; //Input;
+            int Input = MainClass.ChatInput(EnemyList.Count) - 1;
+            return Input;
         }
 
         static void AttackEnemy(int TargetEnemy, string AttackType)
@@ -274,7 +278,7 @@ namespace Stream_AFK_Text_Game
                 foreach (Potions Pot in Player.Inventory.Potions)
                     Potions.Add(Pot.Name);
                 IO.Options(Potions);
-                int Input = 0; //Player.PlayerInputs(4);
+                int Input = MainClass.ChatInput(4);
                 if(Input == -1)
                 {
                     Player.SetStamina(Player.GetStamina() + FightOptionCosts[2]);
@@ -347,9 +351,10 @@ namespace Stream_AFK_Text_Game
                 string Update = NPC.Name + " attacked you and missed!";
                 IO.GameUpdate(Update);
             }
-            List<string> Options = new List<string>() { "Continue" };
-            IO.Options(Options);
+            //List<string> Options = new List<string>() { "Continue" };
+            //IO.Options(Options);
             //int Input = Player.PlayerInputs(Options.Count);
+            Thread.Sleep(5000);
         }
 
         static void DamagePlayer(EnemyNPC NPC, byte AttackType)

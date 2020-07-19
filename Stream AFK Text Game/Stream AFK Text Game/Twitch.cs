@@ -85,8 +85,8 @@ namespace Stream_AFK_Text_Game
                     chatName = chatName.Substring(1);
                     splitPoint = Msg.IndexOf(":", 1);
                     Msg = Msg.Substring(splitPoint + 1);
-                    if(Msg.Substring(0,1) == "!")
-                        GameInputs(Msg);
+                    if (Msg.Substring(0, 1) == "!" && Msg.Length <= 3)
+                        MainClass.ChatOptions.CheckNewVote(Msg);
                 }
                 else if (Msg.Contains("PING"))
                 {
@@ -94,11 +94,6 @@ namespace Stream_AFK_Text_Game
                     SWriter.Flush();
                 }
             }
-        }
-
-        static void GameInputs(string Msg)
-        {
-            Console.WriteLine(Msg);
         }
 
         #endregion
