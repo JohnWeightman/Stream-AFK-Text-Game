@@ -125,8 +125,7 @@ namespace Stream_AFK_Text_Game
             HP -= Damage;
             if (HP <= 0)
             {
-                //Encounter.EncounterXP += XPValue;
-                //Encounter.EncounterGold += Gold;
+                Encounter.EncounterXP += XPValue;
                 Dead = true;
             }
             return Dead;
@@ -134,14 +133,14 @@ namespace Stream_AFK_Text_Game
 
         #region Combat Decision
 
-        public byte CombatDecision()
+        public byte CombatDecision(List<int> FightOptionCosts)
         {
             byte Decision = 0;
-            if (Stamina >= Encounter.FightOptionCosts[1])
+            if (Stamina >= FightOptionCosts[1])
             {
-                if (Stamina / Encounter.FightOptionCosts[0] >= 2)
+                if (Stamina / FightOptionCosts[0] >= 2)
                     Decision = 0;
-                else if (Stamina < (Encounter.FightOptionCosts[1] * 2) && Stamina >= Encounter.FightOptionCosts[0])
+                else if (Stamina < (FightOptionCosts[1] * 2) && Stamina >= FightOptionCosts[0])
                     Decision = 0;
                 else
                     Decision = 1;

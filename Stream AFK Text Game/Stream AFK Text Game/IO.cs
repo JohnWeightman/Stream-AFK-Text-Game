@@ -61,6 +61,30 @@ namespace Stream_AFK_Text_Game
             File.WriteAllText("Stream Files\\Game Mechanics\\Game Updates.txt", Text);
         }
 
+        public static void Events(List<string> Events)
+        {
+            string EveString = "";
+            foreach (string Event in Events)
+                EveString += Event + "\n";
+            File.WriteAllText("Stream Files\\Game Mechanics\\Events.txt", EveString);
+        }
+
+        public static void Options(List<string> Options)
+        {
+            string OptString = "";
+            foreach (string Option in Options)
+                OptString += Option + "\n";
+            File.WriteAllText("Stream Files\\Game Mechanics\\Player Options.txt", OptString);
+        }
+
+        public static void NPCs(List<EnemyNPC> NPCList)
+        {
+            string NPCString = "";
+            foreach (EnemyNPC NPC in NPCList)
+                NPCString += NPC.Name + "\n";
+            File.WriteAllText("Stream Files\\Game Mechanics\\NPCs.txt", NPCString);
+        }
+
         #endregion
 
         #region Player
@@ -190,6 +214,18 @@ namespace Stream_AFK_Text_Game
         public static void PlayerArmourAC(int AC)
         {
             File.WriteAllText("Stream Files\\Player\\2. Equipment\\2. Armour\\3. AC.txt", Convert.ToString(AC));
+        }
+
+        #endregion
+
+        #region Inventory
+
+        public static void PlayerInventory(Inventorys Inventory)
+        {
+            string PotString = "";
+            foreach (Potions Potion in Inventory.Potions)
+                PotString += Potion.Name + "\n";
+            File.WriteAllText("Stream Files\\Player\\2. Equipment\\3. Inventory\\Inventory.txt", PotString);
         }
 
         #endregion
