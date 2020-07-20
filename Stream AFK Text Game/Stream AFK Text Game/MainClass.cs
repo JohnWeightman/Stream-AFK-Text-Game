@@ -23,9 +23,11 @@ namespace Stream_AFK_Text_Game
             Console.WriteLine("Environment: Starting Twitch Client...");
             Twitch.LaunchConnection();
             System.Threading.Thread.Sleep(10000);
-            List<EnemyNPC> Temp = new List<EnemyNPC>();
-            Encounter.StartEncounter(Temp, Player);
-            Console.ReadLine();
+            while (true)
+            {
+                List<EnemyNPC> Temp = new List<EnemyNPC>();
+                Encounter.StartEncounter(Temp, Player);
+            }
         }
 
         public static int ChatInput(int OptNum)
