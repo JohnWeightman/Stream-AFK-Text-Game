@@ -43,9 +43,6 @@ namespace Stream_AFK_Text_Game
             SWriter.WriteLine("JOIN #" + DisplayName.ToLower());
             SWriter.Flush();
             string Response = SReader.ReadLine();
-            Console.WriteLine(Response);
-            string Response2 = SReader.ReadLine();
-            Console.WriteLine(Response2);
             if (Response.Contains("Welcome, GLHF"))
             {
                 Console.WriteLine("Twitch Client: Connected");
@@ -55,6 +52,9 @@ namespace Stream_AFK_Text_Game
                 Console.WriteLine("Twitch Client: Failed to Connect");
                 return;
             }
+            Console.WriteLine(Response);
+            string Response2 = SReader.ReadLine();
+            Console.WriteLine(Response2);
         }
 
         #endregion
@@ -64,7 +64,6 @@ namespace Stream_AFK_Text_Game
         public static void WriteToChat(string Msg)
         {
             SWriter.WriteLine("PRIVMSG #" + DisplayName.ToLower() + " :" + Msg);
-            SWriter.Flush();
         }
 
         static void ReadChat()
@@ -91,7 +90,6 @@ namespace Stream_AFK_Text_Game
                 else if (Msg.Contains("PING"))
                 {
                     SWriter.WriteLine("PONG :tmi.twitch.tv");
-                    SWriter.Flush();
                 }
             }
         }

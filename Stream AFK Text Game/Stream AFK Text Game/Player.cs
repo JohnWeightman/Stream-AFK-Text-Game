@@ -286,7 +286,6 @@ namespace Stream_AFK_Text_Game
             Armour.UpdateArmourString("");
             Weapon.UpdateWeaponString("Shortsword");
             UpdatePlayerAC();
-            IO.Player(this);
         }
 
         #endregion

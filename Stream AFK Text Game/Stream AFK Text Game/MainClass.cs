@@ -9,7 +9,7 @@ namespace Stream_AFK_Text_Game
 {
     class MainClass
     {
-        public static Player Player = new Player();
+        static Player Player = new Player();
         public static ChatOptions ChatOptions = new ChatOptions();
 
         static void Main(string[] args)
@@ -18,9 +18,13 @@ namespace Stream_AFK_Text_Game
             GameObjects.LoadGameObjects();
             Console.WriteLine("Environment: Creating Character...");
             Player.CreateCharacter();
+            Console.WriteLine("Environment: Resetting Files...");
+            IO.ResetFiles(Player);
+            Console.WriteLine("Environment: Starting Twitch Client...");
             Twitch.LaunchConnection();
+            System.Threading.Thread.Sleep(10000);
             List<EnemyNPC> Temp = new List<EnemyNPC>();
-            Encounter.StartEncounter(Temp);
+            Encounter.StartEncounter(Temp, Player);
             Console.ReadLine();
         }
 
@@ -45,6 +49,7 @@ namespace Stream_AFK_Text_Game
         Timer Timer;
         List<int> Options = new List<int>();
         int OptNum;
+        int Seconds = 30;
         bool Vote;
 
         public void SetVote(bool NewVote)
@@ -71,33 +76,39 @@ namespace Stream_AFK_Text_Game
             int Pos;
             for (Pos = 0; Pos < Options.Count; Pos++)
                 if (Options[Pos] == Max)
-                    return Pos;
+                    return Pos + 1;
             return -1;
         }
 
         public void CheckNewVote(string VoteString)
         {
-            OptNum = 3;
             VoteString = VoteString.Substring(1, VoteString.Length - 1);
-            int Vote;
-            bool Result = int.TryParse(VoteString, out Vote);
+            int VoteNum;
+            bool Result = int.TryParse(VoteString, out VoteNum);
             if (!Result)
                 return;
-            else if (Result && Vote <= OptNum && Vote >= 1)
-                Options[Vote - 1] += 1;
+            else if (Result && Vote && VoteNum <= OptNum && VoteNum >= 1)
+                Options[VoteNum - 1] += 1;
         }
 
         public void SetTimer()
         {
-            Timer = new Timer(30000);
+            Timer = new Timer(1000);
             Timer.Elapsed += OnTimedEvent;
-            Timer.AutoReset = false;
+            Timer.AutoReset = true;
             Timer.Enabled = true;
         }
 
         void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            Vote = false;
+            Seconds -= 1;
+            if(Seconds <= 0)
+            {
+                Timer.AutoReset = false;
+                Vote = false;
+                Seconds = 30;
+            }
+            IO.VoteTimer(Seconds);
         }
 
     }

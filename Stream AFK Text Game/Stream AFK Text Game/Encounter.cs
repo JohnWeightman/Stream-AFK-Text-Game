@@ -68,19 +68,18 @@ namespace Stream_AFK_Text_Game
 
         #region FightMechanics
 
-        public static void StartEncounter(List<EnemyNPC> EncounterData)
+        public static void StartEncounter(List<EnemyNPC> EncounterData, Player ChatPlayer)
         {
-            Player = MainClass.Player;
+            Player = ChatPlayer;
+            Debug.Stats.Encounters.SetFightNumber(Debug.Stats.Encounters.GetFightNumber() + 1);
+            Debug.Log("Starting Encounter " + Debug.Stats.Encounters.GetFightNumber());
             foreach (EnemyNPC NPC in EncounterData)
                 EncounterNPCs.Add(NPC);
             SortFightOrder();
             string Update = "Your under attack!\n";
             foreach (EnemyNPC Enemy in EncounterNPCs)
                 Update += "\n" + Enemy.Name;
-            //List<string> Options = new List<string> { "Continue" };
             IO.GameUpdate(Update);
-            //IO.Options(Options);
-            //int Input = Player.PlayerInputs(SE2.Count);
             Thread.Sleep(5000);
             EncounterLoop();
         }
@@ -150,7 +149,7 @@ namespace Stream_AFK_Text_Game
             while (!TurnDone)
             {
                 IO.Options(FightOptions);
-                int Input = 0;
+                int Input = MainClass.ChatInput(FightOptions.Count);
                 int TargetEnemy = 0;
                 switch (Input)
                 {
@@ -158,7 +157,6 @@ namespace Stream_AFK_Text_Game
                         if(Player.GetStamina() >= FightOptionCosts[Input - 1])
                         {
                             Player.SetStamina(Player.GetStamina() - FightOptionCosts[Input - 1]);
-                            IO.PlayerStamina(Player.GetStamina());
                             TargetEnemy = WhichEnemy();
                             AttackEnemy(TargetEnemy, "Heavy");
                         }
@@ -172,7 +170,6 @@ namespace Stream_AFK_Text_Game
                         if(Player.GetStamina() >= FightOptionCosts[Input - 1])
                         {
                             Player.SetStamina(Player.GetStamina() - FightOptionCosts[Input - 1]);
-                            IO.PlayerStamina(Player.GetStamina());
                             TargetEnemy = WhichEnemy();
                             AttackEnemy(TargetEnemy, "Light");
                         }
@@ -200,10 +197,12 @@ namespace Stream_AFK_Text_Game
                     default:
                         break;
                 }
-                if(!TurnDone)
+                IO.PlayerStamina(Player.GetStamina(), Player.GetStaminaMax());
+                if (!TurnDone)
                     TurnDone = CheckFightStatus();
             }
             Player.SetStamina(Player.GetStaminaMax());
+            IO.PlayerStamina(Player.GetStamina(), Player.GetStaminaMax());
         }
 
         static int WhichEnemy()
@@ -291,8 +290,8 @@ namespace Stream_AFK_Text_Game
                         Regen = Player.GetMaxHP() - Player.GetHP();
                     Player.SetHP(Player.GetHP() + Regen);
                     string Update = "You recovered " + Regen + "HP!";
-                    IO.PlayerStamina(Player.GetStamina());
-                    IO.PlayerHP(Player.GetHP());
+                    IO.PlayerStamina(Player.GetStamina(), Player.GetStaminaMax());
+                    IO.PlayerHP(Player.GetHP(), Player.GetMaxHP());
                     IO.GameUpdate(Update);
                     IO.PlayerInventory(Player.Inventory);
                 }
@@ -372,7 +371,7 @@ namespace Stream_AFK_Text_Game
             }
             Player.SetHP(Player.GetHP() - Damage2);
             string Update = NPC.Name + " attacked you for " + Damage2 + " Damage!";
-            IO.PlayerHP(Player.GetHP());
+            IO.PlayerHP(Player.GetHP(), Player.GetMaxHP());
             IO.GameUpdate(Update);
         }
 
