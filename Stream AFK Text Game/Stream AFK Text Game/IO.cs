@@ -38,6 +38,7 @@ namespace Stream_AFK_Text_Game
             PlayerXP(Player.GetXP());
             PlayerLU(Player.GetLU());
             PlayerStamina(Player.GetStamina(), Player.GetStaminaMax());
+            PlayerAttackBonus(Player.GetAtkBonus());
         }
 
         public static void PlayerWeapon(Weapon Weapon)
@@ -132,37 +133,42 @@ namespace Stream_AFK_Text_Game
 
         public static void PlayerAC(int AC)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\5. AC.txt", "AC: " + Convert.ToString(AC));
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\4. AC.txt", "AC: " + Convert.ToString(AC));
         }
 
         public static void PlayerStr(int Str, int StrMod)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\6. Str.txt", "Str: " + Convert.ToString(Str) + " (+" + Convert.ToString(StrMod) + ")");
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\5. Str.txt", "Str: " + Convert.ToString(Str) + " (+" + Convert.ToString(StrMod) + ")");
         }
 
         public static void PlayerDex(int Dex, int DexMod)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\7. Dex.txt", "Dex: " + Convert.ToString(Dex) + " (+" + Convert.ToString(DexMod) + ")");
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\6. Dex.txt", "Dex: " + Convert.ToString(Dex) + " (+" + Convert.ToString(DexMod) + ")");
         }
 
         public static void PlayerCon(int Con, int ConMod)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\8. Con.txt", "Con: " + Convert.ToString(Con) + " (+" + Convert.ToString(ConMod) + ")");
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\7. Con.txt", "Con: " + Convert.ToString(Con) + " (+" + Convert.ToString(ConMod) + ")");
         }
 
         public static void PlayerXP(int XP)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\12. XP.txt", "XP: " + Convert.ToString(XP));
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\8. XP.txt", "XP: " + Convert.ToString(XP));
         }
 
         public static void PlayerLU(int LU)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\13. LevelUp.txt", "Level Up: " + Convert.ToString(LU));
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\9. LevelUp.txt", "Level Up: " + Convert.ToString(LU));
         }
 
         public static void PlayerStamina(int Stamina, int StaminaMax)
         {
-            File.WriteAllText("Stream Files\\Player\\1. Stats\\14. Stamina.txt", "Sta: " + Convert.ToString(Stamina) + "/" + Convert.ToString(StaminaMax));
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\10. Stamina.txt", "Sta: " + Convert.ToString(Stamina) + "/" + Convert.ToString(StaminaMax));
+        }
+
+        public static void PlayerAttackBonus(int AtkBonus)
+        {
+            File.WriteAllText("Stream Files\\Player\\1. Stats\\11. Attack Bonus.txt", "Atk Bns: " + AtkBonus);
         }
 
         #endregion

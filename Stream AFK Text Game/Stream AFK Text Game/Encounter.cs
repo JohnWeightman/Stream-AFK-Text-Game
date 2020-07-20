@@ -112,21 +112,18 @@ namespace Stream_AFK_Text_Game
         static void EncounterEnd()
         {
             string Update = "You won the fight!";
-            //List<string> Options = new List<string>() { "Continue" };
             Events.NewEvent("EncounterWon", ES1: Player.GetName());
-            //IO.Options(Options);
             IO.GameUpdate(Update);
             Thread.Sleep(5000);
-            //int Input = Player.PlayerInputs(Options.Count);
             Update = "You won the fight!\n\nXP Earned: " + EncounterXP;
-            IO.GameUpdate(Update);
             Player.SetXP(Player.GetXP() + EncounterXP);
             EncounterXP = 0;
             Player.SetStamina(Player.GetStaminaMax());
+            IO.GameUpdate(Update);
+            IO.PlayerStamina(Player.GetStamina(), Player.GetStaminaMax());
             IO.PlayerXP(Player.GetXP());
             IO.PlayerLU(Player.GetLU());
-            IO.PlayerInventory(Player.Inventory);
-            //Input = Player.PlayerInputs(Options.Count);
+            IO.NPCs(EncounterNPCs);
             Thread.Sleep(5000);
             FightOrder.Clear();
         }
@@ -219,7 +216,7 @@ namespace Stream_AFK_Text_Game
 
         static void AttackEnemy(int TargetEnemy, string AttackType)
         {
-            int Attack = DiceRoller.RollDice(12) + Player.GetStr() + (Player.GetLevel() / 3);
+            int Attack = DiceRoller.RollDice(12) + Player.GetAtkBonus();
             if (Attack >= EncounterNPCs[TargetEnemy].AC)
             {
                 Events.NewEvent("AttackRoll", Attack - Player.GetStrMod() - (Player.GetLevel() / 3), Player.GetStrMod(), Player.GetLevel() / 3, Attack,

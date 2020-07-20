@@ -9,7 +9,7 @@ namespace Stream_AFK_Text_Game
     class Player
     {
         string Name;
-        int Level, HP, MaxHP, AC, Str, Dex, Con, StrMod, DexMod, ConMod, XP, LU, Stamina, StaminaMax, Initiative;
+        int Level, HP, MaxHP, AC, Str, Dex, Con, StrMod, DexMod, ConMod, XP, LU, Stamina, StaminaMax, Initiative, AtkBonus;
         bool Dead;
         public Weapon Weapon = new Weapon();
         public Armour Armour = new Armour();
@@ -177,6 +177,16 @@ namespace Stream_AFK_Text_Game
             return Dead;
         }
 
+        public void SetAtkBonus()
+        {
+            AtkBonus = Str + (Level / 3);
+        }
+
+        public int GetAtkBonus()
+        {
+            return AtkBonus;
+        }
+
         public void SetInitiative(int NewIni)
         {
             Initiative = NewIni;
@@ -280,6 +290,7 @@ namespace Stream_AFK_Text_Game
             if (StaminaMax < 7)
                 StaminaMax = 7;
             Stamina = StaminaMax;
+            SetAtkBonus();
             AC = DexMod;
             XP = 0;
             LU = 50;
