@@ -25,7 +25,7 @@ namespace Stream_AFK_Text_Game
 
         static void GetTwitchDetails()
         {
-            Console.WriteLine("Twitch Client: Getting Details...");
+            ConWin.UpdateTwitchLog("Twitch Client: Getting Details...");
             DisplayName = File.ReadAllText("Channel Details\\Display Name.txt");
             UserName = File.ReadAllText("Channel Details\\User Name.txt");
             AuthKey = File.ReadAllText("Channel Details\\Auth Key.txt");
@@ -33,7 +33,7 @@ namespace Stream_AFK_Text_Game
 
         static void ConnectToTwitch()
         {
-            Console.WriteLine("Twitch Client: Connecting...");
+            ConWin.UpdateTwitchLog("Twitch Client: Connecting...");
             TwitchClient = new TcpClient("irc.chat.twitch.tv", 6667);
             SReader = new StreamReader(TwitchClient.GetStream());
             SWriter = new StreamWriter(TwitchClient.GetStream());
@@ -45,16 +45,16 @@ namespace Stream_AFK_Text_Game
             string Response = SReader.ReadLine();
             if (Response.Contains("Welcome, GLHF"))
             {
-                Console.WriteLine("Twitch Client: Connected");
+                ConWin.UpdateDebugLog("Twitch Client: Connected");
             }
             else
             {
-                Console.WriteLine("Twitch Client: Failed to Connect");
+                ConWin.UpdateDebugLog("Twitch Client: Failed to Connect");
                 return;
             }
-            Console.WriteLine(Response);
+            ConWin.UpdateTwitchLog(Response);
             string Response2 = SReader.ReadLine();
-            Console.WriteLine(Response2);
+            ConWin.UpdateTwitchLog(Response2);
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace Stream_AFK_Text_Game
             if(TwitchClient.Available > 0)
             {
                 var Msg = SReader.ReadLine();
-                Console.WriteLine(Msg);
+                ConWin.UpdateTwitchLog(Msg);
                 if(Msg.Contains("PRIVMSG"))
                 {
                     var splitPoint = Msg.IndexOf("!", 1);

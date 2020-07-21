@@ -14,20 +14,18 @@ namespace Stream_AFK_Text_Game
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Environment: Loading GameObjects...");
+            ConWin.DrawGUI();
+            ConWin.UpdateDebugLog("Environment: Loading GameObjects...");
             GameObjects.LoadGameObjects();
-            Console.WriteLine("Environment: Creating Character...");
+            ConWin.UpdateDebugLog("Environment: Creating Character...");
             Player.CreateCharacter();
-            Console.WriteLine("Environment: Resetting Files...");
+            ConWin.UpdateDebugLog("Environment: Resetting Files...");
             IO.ResetFiles(Player);
-            Console.WriteLine("Environment: Starting Twitch Client...");
-            Twitch.LaunchConnection();
-            System.Threading.Thread.Sleep(10000);
-            while (true)
-            {
-                List<EnemyNPC> Temp = new List<EnemyNPC>();
-                Encounter.StartEncounter(Temp, Player);
-            }
+            ConWin.UpdateDebugLog("Environment: Starting Twitch Client...");
+            System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
+            System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
+            GameThread.Start();
+            ConWinThread.Start();
         }
 
         public static int ChatInput(int OptNum)
@@ -43,6 +41,17 @@ namespace Stream_AFK_Text_Game
                 ChatChoice = ChatOptions.MostVoted();
             }
             return ChatChoice;
+        }
+
+        static void GameThreadStart()
+        {
+            Twitch.LaunchConnection();
+            System.Threading.Thread.Sleep(10000);
+            while (true)
+            {
+                List<EnemyNPC> Temp = new List<EnemyNPC>();
+                Encounter.StartEncounter(Temp, Player);
+            }
         }
     }
 

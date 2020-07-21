@@ -14,7 +14,7 @@ namespace Stream_AFK_Text_Game
         public static void Log(string LogText)
         {
             LogNumber += 1;
-            Console.WriteLine("Debug.Log #" + LogNumber + ": " + LogText);
+            ConWin.UpdateDebugLog("Debug.Log #" + LogNumber + ": " + LogText);
         }
     }
 
