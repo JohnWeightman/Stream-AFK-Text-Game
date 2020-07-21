@@ -15,13 +15,6 @@ namespace Stream_AFK_Text_Game
         static void Main(string[] args)
         {
             ConWin.DrawGUI();
-            ConWin.UpdateDebugLog("Environment: Loading GameObjects...");
-            GameObjects.LoadGameObjects();
-            ConWin.UpdateDebugLog("Environment: Creating Character...");
-            Player.CreateCharacter();
-            ConWin.UpdateDebugLog("Environment: Resetting Files...");
-            IO.ResetFiles(Player);
-            ConWin.UpdateDebugLog("Environment: Starting Twitch Client...");
             System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
             System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
             GameThread.Start();
@@ -30,6 +23,7 @@ namespace Stream_AFK_Text_Game
 
         public static int ChatInput(int OptNum)
         {
+            Debug.Stats.Voting.SetOptionNumber(OptNum);
             ChatOptions.SetNumberOfOptions(OptNum);
             ChatOptions.SetVote(true);
             ChatOptions.SetTimer();
@@ -45,6 +39,13 @@ namespace Stream_AFK_Text_Game
 
         static void GameThreadStart()
         {
+            ConWin.UpdateDebugLog("Environment: Loading GameObjects...");
+            GameObjects.LoadGameObjects();
+            ConWin.UpdateDebugLog("Environment: Creating Character...");
+            Player.CreateCharacter();
+            ConWin.UpdateDebugLog("Environment: Resetting Files...");
+            IO.ResetFiles(Player);
+            ConWin.UpdateDebugLog("Environment: Starting Twitch Client...");
             Twitch.LaunchConnection();
             System.Threading.Thread.Sleep(10000);
             while (true)
@@ -99,7 +100,10 @@ namespace Stream_AFK_Text_Game
             if (!Result)
                 return;
             else if (Result && Vote && VoteNum <= OptNum && VoteNum >= 1)
+            {
                 Options[VoteNum - 1] += 1;
+                Debug.Stats.Voting.NewVote(VoteNum - 1);
+            }
         }
 
         public void SetTimer()

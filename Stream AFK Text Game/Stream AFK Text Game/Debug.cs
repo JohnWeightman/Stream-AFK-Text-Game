@@ -20,10 +20,11 @@ namespace Stream_AFK_Text_Game
 
     class Stats
     {
-        public Encounters Encounters = new Encounters();
+        public EncounterStats Encounters = new EncounterStats();
+        public VotingStats Voting = new VotingStats();
     }
 
-    class Encounters
+    class EncounterStats
     {
         int FightNumber;
 
@@ -37,6 +38,50 @@ namespace Stream_AFK_Text_Game
         public int GetFightNumber()
         {
             return FightNumber;
+        }
+
+        #endregion
+    }
+
+    class VotingStats
+    {
+        int OptionNumber;
+        List<int> OptionVotes = new List<int>();
+
+        #region Get/Set Functions
+
+        public void SetOptionNumber(int NewOptionNumber)
+        {
+            OptionNumber = NewOptionNumber;
+            OptionVotes.Clear();
+            for (int x = 0; x < OptionNumber; x++)
+                OptionVotes.Add(0);
+        }
+
+        public int GetOptionNumber()
+        {
+            return OptionNumber;
+        }
+
+        public void NewVote(int Vote)
+        {
+            OptionVotes[Vote] += 1;
+        }
+
+        #endregion
+
+        #region Vote Stats functions
+
+        public List<float> VotePercentage()
+        {
+            List<float> VotePercents = new List<float>();
+            int Total = OptionVotes.Sum(x => Convert.ToInt32(x));
+            foreach(int Count in OptionVotes)
+            {
+                float PerCent = (float)Math.Round((float)Count / (float)Total * (float)100, 1);
+                VotePercents.Add(PerCent);
+            }
+            return VotePercents;
         }
 
         #endregion

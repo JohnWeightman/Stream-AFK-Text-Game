@@ -12,17 +12,19 @@ namespace Stream_AFK_Text_Game
         static List<string> TwitchLog = new List<string>();
         static List<string> DebugLog = new List<string>();
         static Timer Timer;
+        static bool UDTwitchLog, UDDebugLog;
 
         #region Thread Functions
 
         public static void ConWinThreadStart()
         {
+            DisplayVotingStatsLog(false);
             SetTimer();
         }
 
         static void SetTimer()
         {
-            Timer = new Timer(1000);
+            Timer = new Timer(100);
             Timer.Elapsed += UpdateDisplay;
             Timer.AutoReset = true;
             Timer.Enabled = true;
@@ -30,8 +32,12 @@ namespace Stream_AFK_Text_Game
 
         static void UpdateDisplay(Object source, ElapsedEventArgs e)
         {
-            DisplayDebugLog();
-            DisplayTwitchLog();
+            if(UDDebugLog)
+                DisplayDebugLog();
+            if(UDTwitchLog)
+                DisplayTwitchLog();
+            if(MainClass.ChatOptions.GetVote())
+                DisplayVotingStatsLog(true);
         }
 
         #endregion
@@ -51,54 +57,76 @@ namespace Stream_AFK_Text_Game
 
         static void DisplayTwitchLog()
         {
-            ClearTwitchLogDisplay();
+            UDTwitchLog = false;
             int y = 1;
-            foreach(string Log in TwitchLog)
+            for(int i = 0; i < TwitchLog.Count; i++)
             {
                 Console.SetCursorPosition(1, y);
-                Console.Write(Log);
+                Console.Write(TwitchLog[i]);
+                if(i - 1 >= 0)
+                    if(TwitchLog[i - 1].Length > TwitchLog[i].Length)
+                    {
+                        int Count = TwitchLog[i - 1].Length - TwitchLog[i].Length;
+                        for(int l = 0; l < Count; l++)
+                        {
+                            Console.SetCursorPosition(1 + TwitchLog[i].Length + l, y);
+                            Console.Write(" ");
+                        }
+                    }
                 y += 1;
             }
-        }
-
-        static void ClearTwitchLogDisplay()
-        {
-            for (int x = 1; x < 150; x++)
-                for (int y = 1; y < 16; y++)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(" ");
-                }
         }
 
         static void DisplayDebugLog()
         {
-            ClearDebugLogDisplay();
+            UDDebugLog = false;
             int y = 17;
-            foreach (string Log in DebugLog)
+            for(int i = 0; i < DebugLog.Count; i++)
             {
                 Console.SetCursorPosition(1, y);
-                Console.Write(Log);
+                Console.Write(DebugLog[i]);
+                if(i - 1 >= 0)
+                    if(DebugLog[i - 1].Length > DebugLog[i].Length)
+                    {
+                        int Count = DebugLog[i - 1].Length - DebugLog[i].Length;
+                        for(int l = 0; l < Count; l++)
+                        {
+                            Console.SetCursorPosition(1 + DebugLog[i].Length + l, y);
+                            Console.Write(" ");
+                        }
+                    }
                 y += 1;
             }
         }
 
-        static void ClearDebugLogDisplay()
+        static void DisplayVotingStatsLog(bool Aval)
         {
-            for (int x = 1; x < 50; x++)
-                for (int y = 17; y < 33; y++)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(" ");
-                }
+            Console.SetCursorPosition(51, 17);
+            if (!Aval)
+            {
+                Console.Write("Voting: ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("CLOSED");
+                Console.ForegroundColor = ConsoleColor.White;
+                return;
+            }
+            Console.Write("Voting: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("OPEN  ");
+            Console.ForegroundColor = ConsoleColor.White;
+            List<float> Votes = Debug.Stats.Voting.VotePercentage();
+            Console.SetCursorPosition(51, 19);
+            Console.Write("Live Votes:");
+            int y = 21;
+            for(int x = 1; x < Votes.Count + 1; x++)
+            {
+                Console.SetCursorPosition(51, y);
+                Console.Write(x + ". " + Votes[x - 1] + "%     ");
+                y += 1;
+            }
         }
 
         static void DisplayGameStatsLog()
-        {
-
-        }
-
-        static void DisplayVotingStatsLog()
         {
 
         }
@@ -117,6 +145,8 @@ namespace Stream_AFK_Text_Game
             TwitchLog.Add(Log);
             if(TwitchLog.Count > 15)
                 TwitchLog.RemoveAt(0);
+            if (!UDTwitchLog)
+                UDTwitchLog = true;
         }
 
         public static void UpdateDebugLog(string Log)
@@ -124,6 +154,8 @@ namespace Stream_AFK_Text_Game
             DebugLog.Add(Log);
             if (DebugLog.Count > 32)
                 DebugLog.RemoveAt(0);
+            if (!UDDebugLog)
+                UDDebugLog = true;
         }
 
         #endregion
