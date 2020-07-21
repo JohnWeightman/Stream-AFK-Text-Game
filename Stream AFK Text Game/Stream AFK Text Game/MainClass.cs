@@ -39,6 +39,8 @@ namespace Stream_AFK_Text_Game
 
         static void GameThreadStart()
         {
+            ConWin.UpdateDebugLog("Environment: Loading Settings...");
+            Settings.LoadSettings();
             ConWin.UpdateDebugLog("Environment: Loading GameObjects...");
             GameObjects.LoadGameObjects();
             ConWin.UpdateDebugLog("Environment: Creating Character...");
@@ -60,8 +62,7 @@ namespace Stream_AFK_Text_Game
     {
         Timer Timer;
         List<int> Options = new List<int>();
-        int OptNum;
-        int Seconds = 30;
+        int OptNum, Seconds;
         bool Vote;
 
         public void SetVote(bool NewVote)
@@ -108,6 +109,7 @@ namespace Stream_AFK_Text_Game
 
         public void SetTimer()
         {
+            Seconds = Settings.GetVoteTimer();
             Timer = new Timer(1000);
             Timer.Elapsed += OnTimedEvent;
             Timer.AutoReset = true;
@@ -121,10 +123,8 @@ namespace Stream_AFK_Text_Game
             {
                 Timer.AutoReset = false;
                 Vote = false;
-                Seconds = 30;
             }
             IO.VoteTimer(Seconds);
         }
-
     }
 }

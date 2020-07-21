@@ -20,6 +20,7 @@ namespace Stream_AFK_Text_Game
         {
             DisplayVotingStatsLog(false);
             SetTimer();
+            StreamerInput();
         }
 
         static void SetTimer()
@@ -32,12 +33,14 @@ namespace Stream_AFK_Text_Game
 
         static void UpdateDisplay(Object source, ElapsedEventArgs e)
         {
+            Tuple<int, int> CursorPos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             if(UDDebugLog)
                 DisplayDebugLog();
             if(UDTwitchLog)
                 DisplayTwitchLog();
             if(MainClass.ChatOptions.GetVote())
                 DisplayVotingStatsLog(true);
+            Console.SetCursorPosition(CursorPos.Item1, CursorPos.Item2);
         }
 
         #endregion
@@ -156,6 +159,57 @@ namespace Stream_AFK_Text_Game
                 DebugLog.RemoveAt(0);
             if (!UDDebugLog)
                 UDDebugLog = true;
+        }
+
+        #endregion
+
+        #region Streamer Inputs
+
+        static void StreamerInput()
+        {
+            while (true)
+            {
+                Console.SetCursorPosition(51, 48);
+                Console.Write("Input: ");
+                string Input = Console.ReadLine();
+                if(Input != "")
+                    FunctionCall(Input);
+                Console.SetCursorPosition(58, 48);
+                Console.Write("                              ");
+            }
+        }
+
+        static void FunctionCall(string Input)
+        {
+            int Pos = Input.IndexOf("(", 0, Input.Length);
+            string MethodCall = "";
+            int Arg = 0;
+            try
+            {
+                MethodCall = Input.Substring(0, Pos);
+                string ArgString = Input.Substring(Pos + 1, Input.Length - (Pos + 1));
+                Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
+            }
+            catch
+            {
+                Debug.Log("Invalid Input: " + Input);
+                return;
+            }
+            switch (MethodCall)
+            {
+                case "SetVoteTimer":
+                    SetVoteTimer(Arg);
+                    break;
+                default:
+                    Debug.Log("Invalid Input: " + Input);
+                    break;
+            }
+        }
+
+        static void SetVoteTimer(int Arg)
+        {
+            Settings.SetVoteTimer(Arg);
+            Debug.Environment("Vote Timer Set to " + Arg + " seconds");
         }
 
         #endregion
