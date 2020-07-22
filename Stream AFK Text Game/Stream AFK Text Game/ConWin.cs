@@ -26,7 +26,7 @@ namespace Stream_AFK_Text_Game
 
         static void SetTimer()
         {
-            Timer = new Timer(1000);
+            Timer = new Timer(Settings.GetConWinRefreshTimer());
             Timer.Elapsed += UpdateDisplay;
             Timer.AutoReset = true;
             Timer.Enabled = true;
@@ -198,7 +198,7 @@ namespace Stream_AFK_Text_Game
                 if(Input != "")
                     FunctionCall(Input);
                 Console.SetCursorPosition(58, 48);
-                Console.Write("                              ");
+                Console.Write("                                        ");
             }
         }
 
@@ -237,6 +237,9 @@ namespace Stream_AFK_Text_Game
                 case "resetconsole":
                     DisplayArg = 4;
                     break;
+                case "setrefreshtimer":
+                    SetRefreshTimer(Arg);
+                    break;
                 default:
                     Debug.Log("Invalid Input: " + Input);
                     break;
@@ -248,11 +251,11 @@ namespace Stream_AFK_Text_Game
             if (Arg >= 5 && Arg <= 3600)
             {
                 Settings.SetVoteTimer(Arg);
-                Debug.Environment("Vote Timer Set to " + Arg + "s");
+                Debug.Environment("Vote Timer set to " + Arg + "s");
             }
             else
             {
-                Debug.Log("Unable to Set Vote Timer to " + Arg + "s");
+                Debug.Log("Unable to set Vote Timer to " + Arg + "s");
                 Debug.Log("Vote Timer Range: 5-3600s");
             }
         }
@@ -289,6 +292,23 @@ namespace Stream_AFK_Text_Game
         {
             ClearAllLogs();
             DrawGUI();
+        }
+
+        static void SetRefreshTimer(int Arg)
+        {
+            if (Arg > 10 && Arg < 60000)
+            {
+                Settings.SetConWinRefreshTimer(Arg);
+                Timer.Stop();
+                Timer.Interval = Arg;
+                Timer.Start();
+                Debug.Environment("Refresh Timer set to " + Arg + "ms");
+            }
+            else
+            {
+                Debug.Log("Unable to set Refresh Timer to " + Arg + "ms");
+                Debug.Log("Vote Timer Range: 10-60000ms");
+            }
         }
 
         #endregion

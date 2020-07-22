@@ -15,6 +15,8 @@ namespace Stream_AFK_Text_Game
         static void Main(string[] args)
         {
             ConWin.DrawGUI();
+            Debug.Environment("Loading Settings...");
+            Settings.LoadSettings();
             System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
             System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
             GameThread.Start();
@@ -39,15 +41,13 @@ namespace Stream_AFK_Text_Game
 
         static void GameThreadStart()
         {
-            ConWin.UpdateDebugLog("Environment: Loading Settings...");
-            Settings.LoadSettings();
-            ConWin.UpdateDebugLog("Environment: Loading GameObjects...");
+            Debug.Environment("Loading GameObjects...");
             GameObjects.LoadGameObjects();
-            ConWin.UpdateDebugLog("Environment: Creating Character...");
+            Debug.Environment("Creating Character...");
             Player.CreateCharacter();
-            ConWin.UpdateDebugLog("Environment: Resetting Files...");
+            Debug.Environment("Resetting Files...");
             IO.ResetFiles(Player);
-            ConWin.UpdateDebugLog("Environment: Starting Twitch Client...");
+            Debug.Environment("Starting Twitch Client...");
             Twitch.LaunchConnection();
             System.Threading.Thread.Sleep(10000);
             while (true)

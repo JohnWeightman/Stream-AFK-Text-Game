@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Stream_AFK_Text_Game
@@ -130,6 +131,8 @@ namespace Stream_AFK_Text_Game
         public void SetXP(int NewXP)
         {
             XP = NewXP;
+            if (XP >= LU)
+                LevelUp();
         }
 
         public int GetXP()
@@ -297,6 +300,24 @@ namespace Stream_AFK_Text_Game
             Armour.UpdateArmourString("");
             Weapon.UpdateWeaponString("Shortsword");
             UpdatePlayerAC();
+        }
+
+        #endregion
+
+        #region Level Up
+
+        void LevelUp()
+        {
+            Thread.Sleep(5000);
+            IO.GameUpdate("You Leveled up!");
+            Thread.Sleep(5000);
+            int ABPoints = 3;
+            while(ABPoints > 0)
+            {
+                IO.GameUpdate("You have 3 ability points to spend!\n\nStr: " + Str + " (+" + StrMod + ")\nDex: " + Dex + " (+" + DexMod + ")\nCon: " + Con +
+                    " (+" + ConMod + ")");
+                Thread.Sleep(5000);
+            }
         }
 
         #endregion

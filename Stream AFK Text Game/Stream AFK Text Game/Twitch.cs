@@ -45,11 +45,11 @@ namespace Stream_AFK_Text_Game
             string Response = SReader.ReadLine();
             if (Response.Contains("Welcome, GLHF"))
             {
-                ConWin.UpdateDebugLog("Twitch Client: Connected");
+                Debug.Environment("Twitch Client -> Connected");
             }
             else
             {
-                ConWin.UpdateDebugLog("Twitch Client: Failed to Connect");
+                Debug.Environment("Twitch Client -> Failed to Connect");
                 return;
             }
             ConWin.UpdateTwitchLog(Response);
