@@ -13,6 +13,7 @@ namespace Stream_AFK_Text_Game
         static List<string> DebugLog = new List<string>();
         static Timer Timer;
         static bool UDTwitchLog, UDDebugLog;
+        static sbyte DisplayArg;
 
         #region Thread Functions
 
@@ -25,7 +26,7 @@ namespace Stream_AFK_Text_Game
 
         static void SetTimer()
         {
-            Timer = new Timer(100);
+            Timer = new Timer(1000);
             Timer.Elapsed += UpdateDisplay;
             Timer.AutoReset = true;
             Timer.Enabled = true;
@@ -40,6 +41,28 @@ namespace Stream_AFK_Text_Game
                 DisplayTwitchLog();
             if(MainClass.ChatOptions.GetVote())
                 DisplayVotingStatsLog(true);
+            if(DisplayArg != 0)
+            {
+                switch (DisplayArg)
+                {
+                    case 1:
+                        ClearDebugLog();
+                        break;
+                    case 2:
+                        ClearTwitchLog();
+                        break;
+                    case 3:
+                        ClearAllLogs();
+                        break;
+                    case 4:
+                        ResetConsole();
+                        break;
+                    default:
+                        Debug.Log("Error - Invalid Variable -> DisplayArg: " + DisplayArg);
+                        break;
+                }
+                DisplayArg = 0;
+            }
             Console.SetCursorPosition(CursorPos.Item1, CursorPos.Item2);
         }
 
@@ -182,13 +205,15 @@ namespace Stream_AFK_Text_Game
         static void FunctionCall(string Input)
         {
             int Pos = Input.IndexOf("(", 0, Input.Length);
+            int Check = Input.IndexOf(")", 0, Input.Length);
             string MethodCall = "";
             int Arg = 0;
             try
             {
-                MethodCall = Input.Substring(0, Pos);
+                MethodCall = Input.Substring(0, Pos).ToLower();
                 string ArgString = Input.Substring(Pos + 1, Input.Length - (Pos + 1));
-                Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
+                if(Check - Pos != 1)
+                    Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
             }
             catch
             {
@@ -197,8 +222,20 @@ namespace Stream_AFK_Text_Game
             }
             switch (MethodCall)
             {
-                case "SetVoteTimer":
+                case "setvotetimer":
                     SetVoteTimer(Arg);
+                    break;
+                case "cleardebuglog":
+                    DisplayArg = 1;
+                    break;
+                case "cleartwitchlog":
+                    DisplayArg = 2;
+                    break;
+                case "clearalllogs":
+                    DisplayArg = 3;
+                    break;
+                case "resetconsole":
+                    DisplayArg = 4;
                     break;
                 default:
                     Debug.Log("Invalid Input: " + Input);
@@ -208,8 +245,50 @@ namespace Stream_AFK_Text_Game
 
         static void SetVoteTimer(int Arg)
         {
-            Settings.SetVoteTimer(Arg);
-            Debug.Environment("Vote Timer Set to " + Arg + " seconds");
+            if (Arg >= 5 && Arg <= 3600)
+            {
+                Settings.SetVoteTimer(Arg);
+                Debug.Environment("Vote Timer Set to " + Arg + "s");
+            }
+            else
+            {
+                Debug.Log("Unable to Set Vote Timer to " + Arg + "s");
+                Debug.Log("Vote Timer Range: 5-3600s");
+            }
+        }
+
+        static void ClearDebugLog()
+        {
+            DebugLog.Clear();
+            for(int x = 1; x < 50; x++)
+                for(int y = 17; y < 33; y++)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(" ");
+                }
+        }
+
+        static void ClearTwitchLog()
+        {
+            TwitchLog.Clear();
+            for(int x = 1; x < 150; x++)
+                for(int y = 1; y < 16; y++)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(" ");
+                }
+        }
+
+        static void ClearAllLogs()
+        {
+            ClearDebugLog();
+            ClearTwitchLog();
+        }
+
+        static void ResetConsole()
+        {
+            ClearAllLogs();
+            DrawGUI();
         }
 
         #endregion
