@@ -240,6 +240,9 @@ namespace Stream_AFK_Text_Game
                 case "setrefreshtimer":
                     SetRefreshTimer(Arg);
                     break;
+                case "setpausetime":
+                    SetPauseTime(Arg);
+                    break;
                 default:
                     Debug.Log("Invalid Input: " + Input);
                     break;
@@ -308,6 +311,20 @@ namespace Stream_AFK_Text_Game
             {
                 Debug.Log("Unable to set Refresh Timer to " + Arg + "ms");
                 Debug.Log("Vote Timer Range: 10-60000ms");
+            }
+        }
+
+        static void SetPauseTime(int Arg)
+        {
+            if(Arg >= 5000 && Arg <= 60000)
+            {
+                Settings.SetPauseTime(Arg);
+                Debug.Environment("Pause Time set to " + Arg + "ms");
+            }
+            else
+            {
+                Debug.Log("Unable to set Pause Time to " + Arg + "ms");
+                Debug.Log("Pause Time Range: 10-60000ms");
             }
         }
 

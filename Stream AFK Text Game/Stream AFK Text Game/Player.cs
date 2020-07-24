@@ -98,9 +98,9 @@ namespace Stream_AFK_Text_Game
             return Con;
         }
 
-        public void SetStrMod(int NewStrMod)
+        public void SetStrMod()
         {
-            StrMod = NewStrMod;
+            StrMod = Str / 3;
         }
 
         public int GetStrMod()
@@ -108,9 +108,9 @@ namespace Stream_AFK_Text_Game
             return StrMod;
         }
 
-        public void SetDexMod(int NewDexMod)
+        public void SetDexMod()
         {
-            DexMod = NewDexMod;
+            DexMod = Dex / 3;
         }
 
         public int GetDexMod()
@@ -118,9 +118,9 @@ namespace Stream_AFK_Text_Game
             return DexMod;
         }
 
-        public void SetConMod(int NewConMod)
+        public void SetConMod()
         {
-            ConMod = NewConMod;
+            ConMod = Con / 3;
         }
 
         public int GetConMod()
@@ -128,9 +128,9 @@ namespace Stream_AFK_Text_Game
             return ConMod;
         }
 
-        public void SetXP(int NewXP)
+        public void AddXP(int AXP)
         {
-            XP = NewXP;
+            XP += AXP;
             if (XP >= LU)
                 LevelUp();
         }
@@ -182,7 +182,7 @@ namespace Stream_AFK_Text_Game
 
         public void SetAtkBonus()
         {
-            AtkBonus = Str + (Level / 3);
+            AtkBonus = StrMod + (Level / 3);
         }
 
         public int GetAtkBonus()
@@ -206,9 +206,9 @@ namespace Stream_AFK_Text_Game
 
         public void UpdateAbilityModifiers()
         {
-            StrMod = Str / 3;
-            DexMod = Dex / 3;
-            ConMod = Con / 3;
+            SetStrMod();
+            SetDexMod();
+            SetConMod();
         }
 
         public int UpdatePlayerAC()
@@ -308,15 +308,36 @@ namespace Stream_AFK_Text_Game
 
         void LevelUp()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(Settings.GetPauseTime());
             IO.GameUpdate("You Leveled up!");
-            Thread.Sleep(5000);
+            Thread.Sleep(Settings.GetPauseTime());
+            List<string> Options = new List<string>() { "Str", "Dex", "Con" };
+            string Extra = "";
             int ABPoints = 3;
             while(ABPoints > 0)
             {
-                IO.GameUpdate("You have 3 ability points to spend!\n\nStr: " + Str + " (+" + StrMod + ")\nDex: " + Dex + " (+" + DexMod + ")\nCon: " + Con +
+                IO.GameUpdate(Extra + "You have 3 ability points to spend!\n\nStr: " + Str + " (+" + StrMod + ")\nDex: " + Dex + " (+" + DexMod + ")\nCon: " + Con +
                     " (+" + ConMod + ")");
-                Thread.Sleep(5000);
+                IO.Options(Options);
+                int Input = MainClass.ChatInput(Options.Count);
+                switch (Input)
+                {
+                    case 1:
+                        Str += 1;
+                        Extra = "Strength increased by 1!\n\n";
+                        break;
+                    case 2:
+                        Dex += 1;
+                        Extra = "Dexterity increased by 1!\n\n";
+                        break;
+                    case 3:
+                        Con += 1;
+                        Extra = "Constitution increased by 1!\n\n";
+                        break;
+                }
+                UpdateAbilityModifiers();
+                SetAtkBonus();
+                ABPoints -= 1;
             }
         }
 

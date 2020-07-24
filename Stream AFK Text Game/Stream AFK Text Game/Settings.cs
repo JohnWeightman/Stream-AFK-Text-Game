@@ -8,7 +8,7 @@ namespace Stream_AFK_Text_Game
 {
     static class Settings
     {
-        static int VoteTimer, ConWinRefreshTimer;
+        static int VoteTimer, ConWinRefreshTimer, PauseTime;
 
         #region Get/Set Functions
 
@@ -32,12 +32,23 @@ namespace Stream_AFK_Text_Game
             return ConWinRefreshTimer;
         }
 
+        public static void SetPauseTime(int NewPauseTime)
+        {
+            PauseTime = NewPauseTime;
+        }
+
+        public static int GetPauseTime()
+        {
+            return PauseTime;
+        }
+
         #endregion
 
         public static void LoadSettings()
         {
             VoteTimer = 30;
-            ConWinRefreshTimer = 1;
+            ConWinRefreshTimer = 1000;
+            PauseTime = 5000;
         }
     }
 }

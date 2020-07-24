@@ -80,7 +80,7 @@ namespace Stream_AFK_Text_Game
             foreach (EnemyNPC Enemy in EncounterNPCs)
                 Update += "\n" + Enemy.Name;
             IO.GameUpdate(Update);
-            Thread.Sleep(5000);
+            Thread.Sleep(Settings.GetPauseTime());
             EncounterLoop();
         }
 
@@ -114,9 +114,9 @@ namespace Stream_AFK_Text_Game
             string Update = "You won the fight!";
             Events.NewEvent("EncounterWon", ES1: Player.GetName());
             IO.GameUpdate(Update);
-            Thread.Sleep(5000);
+            Thread.Sleep(Settings.GetPauseTime());
             Update = "You won the fight!\n\nXP Earned: " + EncounterXP;
-            Player.SetXP(Player.GetXP() + EncounterXP);
+            Player.AddXP(EncounterXP);
             EncounterXP = 0;
             Player.SetStamina(Player.GetStaminaMax());
             IO.GameUpdate(Update);
@@ -124,7 +124,7 @@ namespace Stream_AFK_Text_Game
             IO.PlayerXP(Player.GetXP());
             IO.PlayerLU(Player.GetLU());
             IO.NPCs(EncounterNPCs);
-            Thread.Sleep(5000);
+            Thread.Sleep(Settings.GetPauseTime());
             FightOrder.Clear();
         }
 
