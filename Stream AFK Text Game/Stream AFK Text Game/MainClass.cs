@@ -52,9 +52,48 @@ namespace Stream_AFK_Text_Game
             System.Threading.Thread.Sleep(10000);
             while (true)
             {
-                List<EnemyNPC> Temp = new List<EnemyNPC>();
+                List<EnemyNPC> Temp = SelectEnemies();
                 Encounter.StartEncounter(Temp, Player);
             }
+        }
+
+        static List<EnemyNPC> SelectEnemies()
+        {
+            List<EnemyNPC> EnemyNPCs = new List<EnemyNPC>();
+            if (Player.GetLevel() == 1)
+            {
+                int Ran = DiceRoller.RollDice(2) - 1;
+                EnemyNPC Foe = new EnemyNPC();
+                Foe = GameObjects.NPCs[Ran];
+                EnemyNPCs.Add(Foe);
+            }
+            else
+            {
+                int Ran = DiceRoller.RollDice(6);
+                switch (Ran)
+                {
+                    case 1:
+                    case 2:
+                        Ran = Player.GetLevel() - 1;
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                        Ran = Player.GetLevel();
+                        break;
+                    case 6:
+                        Ran = Player.GetLevel() + 1;
+                        break;
+                }
+                List<EnemyNPC> Temp = new List<EnemyNPC>();
+                foreach (EnemyNPC NPC in GameObjects.NPCs)
+                    if (NPC.DifBonus == Ran)
+                        Temp.Add(NPC);
+                Ran = DiceRoller.RollDice(Temp.Count);
+                EnemyNPC Foe = Temp[Ran];
+                EnemyNPCs.Add(Foe);
+            }
+            return EnemyNPCs;
         }
     }
 
