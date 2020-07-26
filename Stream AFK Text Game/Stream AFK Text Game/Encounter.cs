@@ -144,6 +144,7 @@ namespace Stream_AFK_Text_Game
             {
                 IO.Options(FightOptions);
                 int Input = MainClass.ChatInput(FightOptions.Count);
+                IO.Options(null);
                 int TargetEnemy = 0;
                 switch (Input)
                 {
@@ -208,6 +209,7 @@ namespace Stream_AFK_Text_Game
             }
             IO.Options(EnemyList);
             int Input = MainClass.ChatInput(EnemyList.Count) - 1;
+            IO.Options(null);
             return Input;
         }
 
@@ -272,7 +274,8 @@ namespace Stream_AFK_Text_Game
                     Potions.Add(Pot.Name);
                 IO.Options(Potions);
                 int Input = MainClass.ChatInput(4);
-                if(Input == -1)
+                IO.Options(null);
+                if (Input == -1)
                 {
                     Player.SetStamina(Player.GetStamina() + FightOptionCosts[2]);
                     return;
@@ -344,10 +347,7 @@ namespace Stream_AFK_Text_Game
                 string Update = NPC.Name + " attacked you and missed!";
                 IO.GameUpdate(Update);
             }
-            //List<string> Options = new List<string>() { "Continue" };
-            //IO.Options(Options);
-            //int Input = Player.PlayerInputs(Options.Count);
-            Thread.Sleep(5000);
+            Thread.Sleep(Settings.GetPauseTime());
         }
 
         static void DamagePlayer(EnemyNPC NPC, byte AttackType)

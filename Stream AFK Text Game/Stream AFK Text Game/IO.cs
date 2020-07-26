@@ -73,7 +73,7 @@ namespace Stream_AFK_Text_Game
 
         public static void Options(List<string> Options)
         {
-            string OptString = "";
+            string OptString = "Player Options: \n\n";
             int Count = 0;
             if(Options != null)
                 foreach (string Option in Options)
