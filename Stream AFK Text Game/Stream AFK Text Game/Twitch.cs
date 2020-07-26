@@ -80,12 +80,12 @@ namespace Stream_AFK_Text_Game
                 if(Msg.Contains("PRIVMSG"))
                 {
                     var splitPoint = Msg.IndexOf("!", 1);
-                    var chatName = Msg.Substring(0, splitPoint);
-                    chatName = chatName.Substring(1);
+                    var ChatName = Msg.Substring(0, splitPoint);
+                    ChatName = ChatName.Substring(1);
                     splitPoint = Msg.IndexOf(":", 1);
                     Msg = Msg.Substring(splitPoint + 1);
                     if (Msg.Substring(0, 1) == "!" && Msg.Length <= 3)
-                        MainClass.ChatOptions.CheckNewVote(Msg);
+                        MainClass.ChatOptions.CheckNewVote(Msg, ChatName);
                 }
                 else if (Msg.Contains("PING"))
                 {

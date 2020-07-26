@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Stream_AFK_Text_Game
@@ -101,6 +99,7 @@ namespace Stream_AFK_Text_Game
     {
         Timer Timer;
         List<int> Options = new List<int>();
+        List<string> Voters = new List<string>();
         int OptNum, Seconds;
         bool Vote;
 
@@ -132,7 +131,7 @@ namespace Stream_AFK_Text_Game
             return -1;
         }
 
-        public void CheckNewVote(string VoteString)
+        public void CheckNewVote(string VoteString, string NewUserName)
         {
             VoteString = VoteString.Substring(1, VoteString.Length - 1);
             int VoteNum;
@@ -141,8 +140,16 @@ namespace Stream_AFK_Text_Game
                 return;
             else if (Result && Vote && VoteNum <= OptNum && VoteNum >= 1)
             {
-                Options[VoteNum - 1] += 1;
-                Debug.Stats.Voting.NewVote(VoteNum - 1);
+                bool Voted = false;
+                foreach (string UserName in Voters)
+                    if (UserName == NewUserName)
+                        Voted = true;
+                if (!Voted)
+                {
+                    Voters.Add(NewUserName);
+                    Options[VoteNum - 1] += 1;
+                    Debug.Stats.Voting.NewVote(VoteNum - 1);
+                }
             }
         }
 
@@ -162,6 +169,7 @@ namespace Stream_AFK_Text_Game
             {
                 Timer.AutoReset = false;
                 Vote = false;
+                Voters.Clear();
             }
             IO.VoteTimer(Seconds);
         }

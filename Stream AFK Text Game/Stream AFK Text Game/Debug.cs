@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Stream_AFK_Text_Game
 {
@@ -66,6 +64,11 @@ namespace Stream_AFK_Text_Game
         public int GetOptionNumber()
         {
             return OptionNumber;
+        }
+
+        public int GetTotalVotes()
+        {
+            return OptionVotes.Sum(x => Convert.ToInt32(x));
         }
 
         public void NewVote(int Vote)

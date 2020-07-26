@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Stream_AFK_Text_Game
@@ -12,8 +9,17 @@ namespace Stream_AFK_Text_Game
         static List<string> TwitchLog = new List<string>();
         static List<string> DebugLog = new List<string>();
         static Timer Timer;
-        static bool UDTwitchLog, UDDebugLog;
+        static bool UDTwitchLog, UDDebugLog, UDStatsLog;
         static sbyte DisplayArg;
+
+        #region Get/Set Functions
+
+        public static void SetUDStatsLog(bool NewUDStatsLog)
+        {
+            UDStatsLog = NewUDStatsLog;
+        }
+
+        #endregion
 
         #region Thread Functions
 
@@ -39,6 +45,8 @@ namespace Stream_AFK_Text_Game
                 DisplayDebugLog();
             if(UDTwitchLog)
                 DisplayTwitchLog();
+            if (UDStatsLog)
+                DisplayGameStatsLog();
             if(MainClass.ChatOptions.GetVote())
                 DisplayVotingStatsLog(true);
             if(DisplayArg != 0)
@@ -142,7 +150,7 @@ namespace Stream_AFK_Text_Game
             Console.ForegroundColor = ConsoleColor.White;
             List<float> Votes = Debug.Stats.Voting.VotePercentage();
             Console.SetCursorPosition(51, 19);
-            Console.Write("Live Votes:");
+            Console.Write("Live Votes: " + Debug.Stats.Voting.GetTotalVotes() + " votes");
             int y = 21;
             for(int x = 1; x < Votes.Count + 1; x++)
             {
@@ -154,7 +162,7 @@ namespace Stream_AFK_Text_Game
 
         static void DisplayGameStatsLog()
         {
-
+            UDStatsLog = false;
         }
 
         static void DisplayStreamerInputLog()
