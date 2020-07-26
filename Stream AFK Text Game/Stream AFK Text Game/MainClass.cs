@@ -7,7 +7,7 @@ namespace Stream_AFK_Text_Game
 {
     class MainClass
     {
-        static Player Player = new Player();
+        public static Player Player = new Player();
         public static ChatOptions ChatOptions = new ChatOptions();
 
         static void Main(string[] args)

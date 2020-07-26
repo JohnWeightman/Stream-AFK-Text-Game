@@ -339,6 +339,76 @@ namespace Stream_AFK_Text_Game
         }
 
         #endregion
+
+        #region Change Stats from Console
+
+        public void ConsoleInput(string Stat, int Arg)
+        {
+            switch (Stat)
+            {
+                case "str":
+                    ConsoleInputStr(Arg);
+                    break;
+                case "dex":
+                    ConsoleInputDex(Arg);
+                    break;
+                case "con":
+                    ConsoleInputCon(Arg);
+                    break;
+                default:
+                    Debug.Log("Player -> Invalid Stat - " + Stat);
+                    break;
+            }
+        }
+
+        void ConsoleInputStr(int Arg)
+        {
+            if(Arg >= -30 && Arg <= 30)
+            {
+                Str = Arg;
+                UpdateAbilityModifiers();
+                SetAtkBonus();
+                Debug.Log("Player 'Str' set to " + Str);
+            }
+            else
+            {
+                Debug.Log("Unable to set Player 'Str' to " + Arg);
+                Debug.Log("Player 'Str' Range -> -30-30");
+            }
+        }
+
+        void ConsoleInputDex(int Arg)
+        {
+            if(Arg >= -30 && Arg <= 30)
+            {
+                Dex = Arg;
+                UpdateAbilityModifiers();
+                UpdatePlayerAC();
+                Debug.Log("Player 'Dex' set to " + Dex);
+            }
+            else
+            {
+                Debug.Log("Unable to set Player 'Dex' to " + Arg);
+                Debug.Log("Player 'Dex' Range -> -30-30");
+            }
+        }
+
+        void ConsoleInputCon(int Arg)
+        {
+            if(Arg >= -30 && Arg <= 30)
+            {
+                Con = Arg;
+                UpdateAbilityModifiers();
+                Debug.Log("Player 'Con' set to " + Con);
+            }
+            else
+            {
+                Debug.Log("Unable to set Player 'Con' to " + Arg);
+                Debug.Log("Player 'Con' Range -> -30-30");
+            }
+        }
+
+        #endregion
     }
 
     class Inventorys

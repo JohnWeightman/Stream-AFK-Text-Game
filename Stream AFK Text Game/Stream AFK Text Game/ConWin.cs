@@ -210,24 +210,80 @@ namespace Stream_AFK_Text_Game
             }
         }
 
-        static void FunctionCall(string Input)
+        #region Check Arguments
+
+        static string GetStringArg(string Input)
         {
-            int Pos = Input.IndexOf("(", 0, Input.Length);
-            int Check = Input.IndexOf(")", 0, Input.Length);
-            string MethodCall = "";
-            int Arg = 0;
             try
             {
-                MethodCall = Input.Substring(0, Pos).ToLower();
-                string ArgString = Input.Substring(Pos + 1, Input.Length - (Pos + 1));
-                if(Check - Pos != 1)
-                    Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
+                int Pos1 = Input.IndexOf("\"", 0, Input.Length);
+                int Pos2 = Input.IndexOf("\"", Pos1 + 1, Input.Length - (Pos1 + 1));
+                Input = Input.Substring(Pos1 + 1, Pos2 - (Pos1 + 1));
             }
             catch
             {
-                Debug.Log("Invalid Input: " + Input);
+                return "";
+            }
+            return Input;
+        }
+
+        static int GetIntegerArg(string Input)
+        {
+            int Arg;
+            if (Input.Contains(","))
+            {
+                int Pos1 = Input.IndexOf(",", 0, Input.Length);
+                int Pos2 = Input.IndexOf("\"", 0, Input.Length);
+                if(Pos1 - Pos2 < 0)     //Integer is 1st argument
+                {
+                    Pos1 = Input.IndexOf("(", 0, Input.Length);
+                    Pos2 = Input.IndexOf(",", Pos1 + 1, Input.Length - (Pos1 + 1));
+                    string ArgString = Input.Substring(Pos1 + 1, Input.Length - (Pos1 + 1));
+                    Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
+                }
+                else                    //Integer is 2nd arguement
+                {
+                    Pos1 = Input.IndexOf(",", 0, Input.Length);
+                    Pos2 = Input.IndexOf(")", Pos1 + 1, Input.Length - (Pos1 + 1));
+                    string ArgString = Input.Substring(Pos1 + 1, Input.Length - (Pos1 + 1));
+                    Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
+                }
+            }
+            else
+            {
+                int Pos = Input.IndexOf("(", 0, Input.Length);
+                string ArgString = Input.Substring(Pos + 1, Input.Length - (Pos + 1));
+                Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
+            }
+            return Arg;
+        }
+
+        #endregion
+
+        static void FunctionCall(string Input)
+        {
+            Input.Replace(" ", "");
+            int Pos = Input.IndexOf("(", 0, Input.Length);
+            int Check = Input.IndexOf(")", 0, Input.Length);
+            string MethodCall = "";
+            int Arg = -1;
+            string ArgStr = "";
+            try
+            {
+                MethodCall = Input.Substring(0, Pos).ToLower();
+                if(Check - Pos != 1)
+                {
+                    ArgStr = GetStringArg(Input);
+                    Arg = GetIntegerArg(Input);
+                }
+            }
+            catch
+            {
+                Debug.Log("Invalid Input -> " + Input);
                 return;
             }
+
+
             switch (MethodCall)
             {
                 case "setvotetimer":
@@ -251,8 +307,14 @@ namespace Stream_AFK_Text_Game
                 case "setpausetime":
                     SetPauseTime(Arg);
                     break;
+                case "setplayerstat":
+                    if (Arg != -1 && ArgStr != "")
+                        MainClass.Player.ConsoleInput(ArgStr, Arg);
+                    else
+                        Debug.Log("Invalid Arguments -> " + ArgStr + ", " + Arg);
+                    break;
                 default:
-                    Debug.Log("Invalid Input: " + Input);
+                    Debug.Log("Invalid Input -> " + Input);
                     break;
             }
         }
@@ -267,7 +329,7 @@ namespace Stream_AFK_Text_Game
             else
             {
                 Debug.Log("Unable to set Vote Timer to " + Arg + "s");
-                Debug.Log("Vote Timer Range: 5-3600s");
+                Debug.Log("Vote Timer Range -> 5-3600s");
             }
         }
 
@@ -318,7 +380,7 @@ namespace Stream_AFK_Text_Game
             else
             {
                 Debug.Log("Unable to set Refresh Timer to " + Arg + "ms");
-                Debug.Log("Vote Timer Range: 10-60000ms");
+                Debug.Log("Vote Timer Range -> 10-60000ms");
             }
         }
 
@@ -332,7 +394,7 @@ namespace Stream_AFK_Text_Game
             else
             {
                 Debug.Log("Unable to set Pause Time to " + Arg + "ms");
-                Debug.Log("Pause Time Range: 10-60000ms");
+                Debug.Log("Pause Time Range -> 10-60000ms");
             }
         }
 
