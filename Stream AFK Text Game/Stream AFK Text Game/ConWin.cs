@@ -307,6 +307,9 @@ namespace Stream_AFK_Text_Game
                 case "setpausetime":
                     SetPauseTime(Arg);
                     break;
+                case "setchatreminder":
+                    SetChatReminder(Arg);
+                    break;
                 case "setplayerstat":
                     if (Arg != -1 && ArgStr != "")
                         MainClass.Player.ConsoleInput(ArgStr, Arg);
@@ -395,6 +398,20 @@ namespace Stream_AFK_Text_Game
             {
                 Debug.Log("Unable to set Pause Time to " + Arg + "ms");
                 Debug.Log("Pause Time Range -> 10-60000ms");
+            }
+        }
+
+        static void SetChatReminder(int Arg)
+        {
+            if (Arg >= 60 && Arg <= 3600)
+            {
+                Settings.SetChatWriterTime(Arg);
+                Debug.Environment("Chat Reminder set to " + Arg + "s");
+            }
+            else
+            {
+                Debug.Log("Unable to set Chat Reminder to " + Arg + "s");
+                Debug.Log("Chat Reminder Range -> 60-3600s");
             }
         }
 

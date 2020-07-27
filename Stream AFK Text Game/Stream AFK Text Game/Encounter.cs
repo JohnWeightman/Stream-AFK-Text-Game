@@ -207,9 +207,17 @@ namespace Stream_AFK_Text_Game
             {
                 EnemyList.Add(Enemy.Name);
             }
-            IO.Options(EnemyList);
-            int Input = MainClass.ChatInput(EnemyList.Count) - 1;
-            IO.Options(null);
+            int Input;
+            if(EnemyList.Count > 1)
+            {
+                IO.Options(EnemyList);
+                Input = MainClass.ChatInput(EnemyList.Count) - 1;
+                IO.Options(null);
+            }
+            else
+            {
+                Input = 0;
+            }
             return Input;
         }
 

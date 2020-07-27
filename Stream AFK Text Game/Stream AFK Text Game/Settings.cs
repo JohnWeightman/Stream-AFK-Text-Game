@@ -2,7 +2,7 @@
 {
     static class Settings
     {
-        static int VoteTimer, ConWinRefreshTimer, PauseTime;
+        static int VoteTimer, ConWinRefreshTimer, PauseTime, ChatWriterTime;
 
         #region Get/Set Functions
 
@@ -36,6 +36,16 @@
             return PauseTime;
         }
 
+        public static void SetChatWriterTime(int NewChatWriterTime)
+        {
+            ChatWriterTime = NewChatWriterTime;
+        }
+
+        public static int GetChatWriterTime()
+        {
+            return ChatWriterTime;
+        }
+
         #endregion
 
         public static void LoadSettings()
@@ -43,6 +53,7 @@
             VoteTimer = 30;
             ConWinRefreshTimer = 1000;
             PauseTime = 5000;
+            ChatWriterTime = 900;
         }
     }
 }

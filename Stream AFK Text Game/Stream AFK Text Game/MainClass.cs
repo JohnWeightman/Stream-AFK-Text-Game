@@ -14,6 +14,8 @@ namespace Stream_AFK_Text_Game
         {
             ConWin.DrawGUI();
             Debug.Environment("Loading Settings...");
+            IO.GameUpdate("Game Starting...");
+            IO.Options(null);
             Settings.LoadSettings();
             System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
             System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
@@ -27,7 +29,6 @@ namespace Stream_AFK_Text_Game
             ChatOptions.SetNumberOfOptions(OptNum);
             ChatOptions.SetVote(true);
             ChatOptions.SetTimer();
-            Twitch.WriteToChat("Type '!' and the number of the option you wish to vote for!\n\nOptions: 1-" + OptNum + ", EG '!1'");
             int ChatChoice = 0;
             while (ChatOptions.GetVote())
             {
@@ -39,20 +40,31 @@ namespace Stream_AFK_Text_Game
 
         static void GameThreadStart()
         {
+            Debug.Environment("Starting Twitch Client...");
+            Twitch.LaunchConnection();
+            System.Threading.Thread.Sleep(10000);
             Debug.Environment("Loading GameObjects...");
             GameObjects.LoadGameObjects();
+            GameLoop();
+        }
+
+        static void GameLoop()
+        {
+            IO.GameUpdate("Game Starting...");
             Debug.Environment("Creating Character...");
             Player.CreateCharacter();
             Debug.Environment("Resetting Files...");
             IO.ResetFiles(Player);
-            Debug.Environment("Starting Twitch Client...");
-            Twitch.LaunchConnection();
-            System.Threading.Thread.Sleep(10000);
-            while (true)
+            Twitch.WriteToChat("Type '!' and the number of the option you wish to vote for!");
+            System.Threading.Thread.Sleep(Settings.GetPauseTime());
+            while (!Player.GetDead())
             {
                 List<EnemyNPC> Temp = SelectEnemies();
                 Encounter.StartEncounter(Temp, Player);
             }
+            IO.GameUpdate("YOU DIED");
+            System.Threading.Thread.Sleep(Settings.GetPauseTime());
+            GameLoop();
         }
 
         static List<EnemyNPC> SelectEnemies()

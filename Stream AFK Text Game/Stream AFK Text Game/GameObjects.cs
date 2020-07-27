@@ -21,37 +21,7 @@ namespace Stream_AFK_Text_Game
             Doc.Load("GameObjects.xml");
             foreach (XmlNode Node in Doc.DocumentElement)
             {
-                if (Node.Name == "Enemies")
-                {
-                    int Count = 0;
-                    int ChildCount = Convert.ToInt32(Node.Attributes[0].Value);
-                    EnemyNPC[] EnmTemp = new EnemyNPC[ChildCount];
-                    foreach (XmlNode Child in Node.ChildNodes)
-                    {
-                        EnmTemp[Count] = new EnemyNPC();
-                        EnmTemp[Count].Name = Child.Name;
-                        EnmTemp[Count].HP = Convert.ToInt32(Child.Attributes[0].Value);
-                        EnmTemp[Count].MaxHP = EnmTemp[Count].HP;
-                        EnmTemp[Count].AC = Convert.ToInt32(Child.Attributes[1].Value);
-                        EnmTemp[Count].Str = Convert.ToInt32(Child.Attributes[2].Value);
-                        EnmTemp[Count].StrMod = Convert.ToInt32(Child.Attributes[3].Value);
-                        EnmTemp[Count].Dex = Convert.ToInt32(Child.Attributes[4].Value);
-                        EnmTemp[Count].DexMod = Convert.ToInt32(Child.Attributes[5].Value);
-                        EnmTemp[Count].Con = Convert.ToInt32(Child.Attributes[6].Value);
-                        EnmTemp[Count].ConMod = Convert.ToInt32(Child.Attributes[7].Value);
-                        EnmTemp[Count].Stamina = Convert.ToInt32(Child.Attributes[8].Value);
-                        EnmTemp[Count].StaminaMax = Convert.ToInt32(Child.Attributes[9].Value);
-                        EnmTemp[Count].DifBonus = Convert.ToInt32(Child.Attributes[10].Value);
-                        EnmTemp[Count].Weapon.UpdateWeaponString(Child.Attributes[11].Value);
-                        EnmTemp[Count].OffHand = Child.Attributes[12].Value;
-                        EnmTemp[Count].Armour.UpdateArmourString(Child.Attributes[13].Value);
-                        EnmTemp[Count].XPValue = Convert.ToInt32(Child.Attributes[14].Value);
-                        Count++;
-                    }
-                    foreach (EnemyNPC NPC in EnmTemp)
-                        NPCs.Add(NPC);
-                }
-                else if (Node.Name == "Weapons")
+                if (Node.Name == "Weapons")
                 {
                     int Count = 0;
                     int ChildCount = Convert.ToInt32(Node.Attributes[0].Value);
@@ -101,6 +71,36 @@ namespace Stream_AFK_Text_Game
                     }
                     foreach (Potions Potion in PotTemp)
                         Potions.Add(Potion);
+                }
+                else if (Node.Name == "Enemies")
+                {
+                    int Count = 0;
+                    int ChildCount = Convert.ToInt32(Node.Attributes[0].Value);
+                    EnemyNPC[] EnmTemp = new EnemyNPC[ChildCount];
+                    foreach (XmlNode Child in Node.ChildNodes)
+                    {
+                        EnmTemp[Count] = new EnemyNPC();
+                        EnmTemp[Count].Name = Child.Name;
+                        EnmTemp[Count].HP = Convert.ToInt32(Child.Attributes[0].Value);
+                        EnmTemp[Count].MaxHP = EnmTemp[Count].HP;
+                        EnmTemp[Count].AC = Convert.ToInt32(Child.Attributes[1].Value);
+                        EnmTemp[Count].Str = Convert.ToInt32(Child.Attributes[2].Value);
+                        EnmTemp[Count].StrMod = Convert.ToInt32(Child.Attributes[3].Value);
+                        EnmTemp[Count].Dex = Convert.ToInt32(Child.Attributes[4].Value);
+                        EnmTemp[Count].DexMod = Convert.ToInt32(Child.Attributes[5].Value);
+                        EnmTemp[Count].Con = Convert.ToInt32(Child.Attributes[6].Value);
+                        EnmTemp[Count].ConMod = Convert.ToInt32(Child.Attributes[7].Value);
+                        EnmTemp[Count].Stamina = Convert.ToInt32(Child.Attributes[8].Value);
+                        EnmTemp[Count].StaminaMax = Convert.ToInt32(Child.Attributes[9].Value);
+                        EnmTemp[Count].DifBonus = Convert.ToInt32(Child.Attributes[10].Value);
+                        EnmTemp[Count].Weapon.UpdateWeaponString(Child.Attributes[11].Value);
+                        EnmTemp[Count].OffHand = Child.Attributes[12].Value;
+                        EnmTemp[Count].Armour.UpdateArmourString(Child.Attributes[13].Value);
+                        EnmTemp[Count].XPValue = Convert.ToInt32(Child.Attributes[14].Value);
+                        Count++;
+                    }
+                    foreach (EnemyNPC NPC in EnmTemp)
+                        NPCs.Add(NPC);
                 }
             }
         }

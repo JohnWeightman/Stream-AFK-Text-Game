@@ -14,6 +14,8 @@ namespace Stream_AFK_Text_Game
         private static StreamReader SReader;
         private static StreamWriter SWriter;
 
+        static int ChatWriterTimer;
+
         #region Connect to Twitch
 
         public static void LaunchConnection()
@@ -46,6 +48,7 @@ namespace Stream_AFK_Text_Game
             if (Response.Contains("Welcome, GLHF"))
             {
                 Debug.Environment("Twitch Client -> Connected");
+                ChatWriterTimer = Settings.GetChatWriterTime();
             }
             else
             {
@@ -64,6 +67,7 @@ namespace Stream_AFK_Text_Game
         public static void WriteToChat(string Msg)
         {
             SWriter.WriteLine("PRIVMSG #" + DisplayName.ToLower() + " :" + Msg);
+            SWriter.Flush();
         }
 
         static void ReadChat()
@@ -91,6 +95,12 @@ namespace Stream_AFK_Text_Game
                 {
                     SWriter.WriteLine("PONG :tmi.twitch.tv");
                 }
+            }
+            ChatWriterTimer -= 1;
+            if(ChatWriterTimer <= 0)
+            {
+                WriteToChat("Type '!' and the number of the option you wish to vote for!");
+                ChatWriterTimer = Settings.GetChatWriterTime();
             }
         }
 
