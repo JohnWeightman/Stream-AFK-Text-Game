@@ -90,13 +90,16 @@ namespace Stream_AFK_Text_Game
                     Msg = Msg.Substring(splitPoint + 1);
                     if (Msg.Substring(0, 1) == "!" && Msg.Length <= 3)
                         MainClass.ChatOptions.CheckNewVote(Msg, ChatName);
+                    if (Msg.Substring(0, 1) == "!" && ChatName == DisplayName.ToLower())
+                        StreamerChatCommands(Msg);
                 }
                 else if (Msg.Contains("PING"))
                 {
                     SWriter.WriteLine("PONG :tmi.twitch.tv");
                 }
             }
-            ChatWriterTimer -= 1;
+            if(!Settings.GetPause())
+                ChatWriterTimer -= 1;
             if(ChatWriterTimer <= 0)
             {
                 WriteToChat("Type '!' and the number of the option you wish to vote for!");
@@ -105,5 +108,24 @@ namespace Stream_AFK_Text_Game
         }
 
         #endregion
+
+        #region Twitch Commands
+
+        static void StreamerChatCommands(string Msg)
+        {
+            if ((Msg == "!Start" || Msg == "!start" || Msg == "!START") && Settings.GetPause())
+            {
+                Settings.SetPause(false);
+                Debug.Environment("GAME RESUMED");
+            }
+            else if ((Msg == "!Stop" || Msg == "!stop" || Msg == "!STOP") && !Settings.GetPause())
+            {
+                Settings.SetPause(true);
+                Debug.Environment("GAME PAUSED");
+            }
+        }
+
+        #endregion
+
     }
 }

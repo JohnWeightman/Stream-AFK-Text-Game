@@ -69,7 +69,7 @@ namespace Stream_AFK_Text_Game
         {
             Player = ChatPlayer;
             Debug.Stats.Encounters.SetFightNumber(Debug.Stats.Encounters.GetFightNumber() + 1);
-            Debug.Log("Starting Encounter " + Debug.Stats.Encounters.GetFightNumber());
+            Debug.Environment("Starting Encounter " + Debug.Stats.Encounters.GetFightNumber());
             foreach (EnemyNPC NPC in EncounterData)
                 EncounterNPCs.Add(NPC);
             SortFightOrder();
@@ -352,7 +352,7 @@ namespace Stream_AFK_Text_Game
 
         static void AttackPlayer(EnemyNPC NPC, byte AttackType)
         {
-            int Attack = DiceRoller.RollDice(12) + NPC.StrMod + NPC.DifBonus;
+            int Attack = DiceRoller.RollDice(12) + NPC.StrMod + (NPC.DifBonus / 3);
             if(Attack >= Player.GetAC())
             {
                 Events.NewEvent("AttackRoll", Attack - (NPC.StrMod + NPC.DifBonus), NPC.StrMod, NPC.DifBonus, Attack, Player.GetAC(), NPC.Name, Player.GetName(), 

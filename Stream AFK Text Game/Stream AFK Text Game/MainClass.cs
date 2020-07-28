@@ -16,7 +16,7 @@ namespace Stream_AFK_Text_Game
             IO.GameUpdate("Game Starting...");
             IO.Options(null);
             Debug.Environment("Loading Settings...");
-            Settings.LoadSettings();
+            Settings.LoadSettingsFromFile();
             System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
             System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
             GameThread.Start();
@@ -179,14 +179,17 @@ namespace Stream_AFK_Text_Game
 
         void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            Seconds -= 1;
-            if(Seconds <= 0)
+            if (!Settings.GetPause())
             {
-                Timer.AutoReset = false;
-                Vote = false;
-                Voters.Clear();
+                Seconds -= 1;
+                if (Seconds <= 0)
+                {
+                    Timer.AutoReset = false;
+                    Vote = false;
+                    Voters.Clear();
+                }
+                IO.VoteTimer(Seconds);
             }
-            IO.VoteTimer(Seconds);
         }
     }
 }

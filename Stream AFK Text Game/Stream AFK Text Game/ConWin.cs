@@ -234,14 +234,13 @@ namespace Stream_AFK_Text_Game
                 if(Pos1 - Pos2 < 0)     //Integer is 1st argument
                 {
                     Pos1 = Input.IndexOf("(", 0, Input.Length);
-                    Pos2 = Input.IndexOf(",", Pos1 + 1, Input.Length - (Pos1 + 1));
                     string ArgString = Input.Substring(Pos1 + 1, Input.Length - (Pos1 + 1));
-                    Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
+                    Pos2 = ArgString.IndexOf(",", 0, ArgString.Length);
+                    Arg = Convert.ToInt32(ArgString.Substring(0, Pos2));
                 }
                 else                    //Integer is 2nd arguement
                 {
                     Pos1 = Input.IndexOf(",", 0, Input.Length);
-                    Pos2 = Input.IndexOf(")", Pos1 + 1, Input.Length - (Pos1 + 1));
                     string ArgString = Input.Substring(Pos1 + 1, Input.Length - (Pos1 + 1));
                     Arg = Convert.ToInt32(ArgString.Substring(0, ArgString.Length - 1));
                 }
@@ -306,6 +305,15 @@ namespace Stream_AFK_Text_Game
                     break;
                 case "setchatreminder":
                     SetChatReminder(Arg);
+                    break;
+                case "loaddefaultsettings":
+                    LoadDefaultSettings();
+                    break;
+                case "pausegame":
+                    PauseGame();
+                    break;
+                case "resumegame":
+                    ResumeGame();
                     break;
                 case "setplayerstat":
                     if (Arg != -1 && ArgStr != "")
@@ -410,6 +418,34 @@ namespace Stream_AFK_Text_Game
                 Debug.Log("Unable to set Chat Reminder to " + Arg + "s");
                 Debug.Log("Chat Reminder Range -> 60-3600s");
             }
+        }
+
+        static void LoadDefaultSettings()
+        {
+            Settings.LoadDefaultSettings();
+            Debug.Environment("Default Settings Loaded");
+        }
+
+        static void PauseGame()
+        {
+            if (!Settings.GetPause())
+            {
+                Settings.SetPause(true);
+                Debug.Environment("GAME PAUSED");
+            }
+            else
+                Debug.Log("Game already Running");
+        }
+
+        static void ResumeGame()
+        {
+            if (Settings.GetPause())
+            {
+                Settings.SetPause(false);
+                Debug.Environment("GAME RESUMED");
+            }
+            else
+                Debug.Log("Game already Paused");
         }
 
         #endregion

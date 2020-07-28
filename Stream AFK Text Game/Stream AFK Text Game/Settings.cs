@@ -1,16 +1,22 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Stream_AFK_Text_Game
 {
     static class Settings
     {
         static SerialSettings SettingsObj = new SerialSettings();
-        //static int VoteTimer, ConWinRefreshTimer, PauseTime, ChatWriterTime;
+        static IFormatter Formatter = new BinaryFormatter();
+        static bool Pause;
+
         #region Get/Set Functions
 
         public static void SetVoteTimer(int NewVoteTimer)
         {
             SettingsObj.SetVoteTimer(NewVoteTimer);
+            SaveSettingsToFile();
         }
 
         public static int GetVoteTimer()
@@ -21,6 +27,7 @@ namespace Stream_AFK_Text_Game
         public static void SetConWinRefreshTimer(int NewConWinRefreshTimer)
         {
             SettingsObj.SetConWinRefreshTimer(NewConWinRefreshTimer);
+            SaveSettingsToFile();
         }
 
         public static int GetConWinRefreshTimer()
@@ -31,6 +38,7 @@ namespace Stream_AFK_Text_Game
         public static void SetPauseTime(int NewPauseTime)
         {
             SettingsObj.SetPauseTime(NewPauseTime);
+            SaveSettingsToFile();
         }
 
         public static int GetPauseTime()
@@ -41,11 +49,22 @@ namespace Stream_AFK_Text_Game
         public static void SetChatWriterTime(int NewChatWriterTime)
         {
             SettingsObj.SetChatWriterTime(NewChatWriterTime);
+            SaveSettingsToFile();
         }
 
         public static int GetChatWriterTime()
         {
             return SettingsObj.GetChatWriterTime();
+        }
+
+        public static void SetPause(bool NewPause)
+        {
+            Pause = NewPause;
+        }
+
+        public static bool GetPause()
+        {
+            return Pause;
         }
 
         #endregion
@@ -57,12 +76,33 @@ namespace Stream_AFK_Text_Game
             SettingsObj.SetPauseTime(5000);
             SettingsObj.SetChatWriterTime(900);
         }
+
+        public static void LoadSettingsFromFile()
+        {
+            Stream Stream = new FileStream("Streamer Settings.dat", FileMode.Open, FileAccess.Read);
+            SettingsObj = (SerialSettings)Formatter.Deserialize(Stream);
+            Stream.Close();
+        }
+
+        public static void LoadDefaultSettings()
+        {
+            Stream Stream = new FileStream("Default Settings.dat", FileMode.Open, FileAccess.Read);
+            SettingsObj = (SerialSettings)Formatter.Deserialize(Stream);
+            Stream.Close();
+        }
+
+        static void SaveSettingsToFile()
+        {
+            Stream Stream = new FileStream("Streamer Settings.dat", FileMode.Create, FileAccess.Write);
+            Formatter.Serialize(Stream, SettingsObj);
+            Stream.Close();
+        }
     }
 
     [Serializable]
     class SerialSettings
     {
-        static int VoteTimer, ConWinRefreshTimer, PauseTime, ChatWriterTime;
+        int VoteTimer, ConWinRefreshTimer, PauseTime, ChatWriterTime;
 
         #region Get/Set Functions
 
