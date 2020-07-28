@@ -47,8 +47,10 @@ namespace Stream_AFK_Text_Game
                 DisplayTwitchLog();
             if (UDStatsLog)
                 DisplayGameStatsLog();
-            if(MainClass.ChatOptions.GetVote())
+            if (MainClass.ChatOptions.GetVote())
                 DisplayVotingStatsLog(true);
+            else
+                DisplayVotingStatsLog(false);
             if(DisplayArg != 0)
             {
                 switch (DisplayArg)
@@ -163,11 +165,6 @@ namespace Stream_AFK_Text_Game
         static void DisplayGameStatsLog()
         {
             UDStatsLog = false;
-        }
-
-        static void DisplayStreamerInputLog()
-        {
-
         }
 
         #endregion

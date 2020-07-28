@@ -13,9 +13,9 @@ namespace Stream_AFK_Text_Game
         static void Main(string[] args)
         {
             ConWin.DrawGUI();
-            Debug.Environment("Loading Settings...");
             IO.GameUpdate("Game Starting...");
             IO.Options(null);
+            Debug.Environment("Loading Settings...");
             Settings.LoadSettings();
             System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
             System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
@@ -29,8 +29,8 @@ namespace Stream_AFK_Text_Game
             ChatOptions.SetNumberOfOptions(OptNum);
             ChatOptions.SetVote(true);
             ChatOptions.SetTimer();
-            int ChatChoice = 0;
-            while (ChatOptions.GetVote())
+            int ChatChoice = -1;
+            while (ChatOptions.GetVote() && ChatChoice == -1)
             {
                 System.Threading.Thread.Sleep(1000);
                 ChatChoice = ChatOptions.MostVoted();
@@ -42,7 +42,7 @@ namespace Stream_AFK_Text_Game
         {
             Debug.Environment("Starting Twitch Client...");
             Twitch.LaunchConnection();
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(5000);
             Debug.Environment("Loading GameObjects...");
             GameObjects.LoadGameObjects();
             GameLoop();
@@ -135,11 +135,14 @@ namespace Stream_AFK_Text_Game
 
         public int MostVoted()
         {
-            int Max = Options.Max();
-            int Pos;
-            for (Pos = 0; Pos < Options.Count; Pos++)
-                if (Options[Pos] == Max)
-                    return Pos + 1;
+            if(Options.Sum(x => Convert.ToInt32(x)) > 0)
+            {
+                int Max = Options.Max();
+                int Pos;
+                for (Pos = 0; Pos < Options.Count; Pos++)
+                    if (Options[Pos] == Max)
+                        return Pos + 1;
+            }
             return -1;
         }
 

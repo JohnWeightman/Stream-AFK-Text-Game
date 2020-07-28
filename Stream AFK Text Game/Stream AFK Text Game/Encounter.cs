@@ -142,8 +142,12 @@ namespace Stream_AFK_Text_Game
             bool TurnDone = false;
             while (!TurnDone)
             {
-                IO.Options(FightOptions);
-                int Input = MainClass.ChatInput(FightOptions.Count);
+                List<string> ViableOptions = new List<string>();
+                for (int x = 0; x < FightOptionCosts.Count; x++)
+                    if (Player.GetStamina() >= FightOptionCosts[x])
+                        ViableOptions.Add(FightOptions[x]);
+                IO.Options(ViableOptions);
+                int Input = MainClass.ChatInput(ViableOptions.Count) + (FightOptions.Count - ViableOptions.Count);
                 IO.Options(null);
                 int TargetEnemy = 0;
                 switch (Input)
@@ -194,7 +198,14 @@ namespace Stream_AFK_Text_Game
                 }
                 IO.PlayerStamina(Player.GetStamina(), Player.GetStaminaMax());
                 if (!TurnDone)
+                {
                     TurnDone = CheckFightStatus();
+                    if (!TurnDone && Player.GetStamina() < 3)
+                    {
+                        TurnDone = true;
+                        Thread.Sleep(Settings.GetPauseTime());
+                    }
+                }
             }
             Player.SetStamina(Player.GetStaminaMax());
             IO.PlayerStamina(Player.GetStamina(), Player.GetStaminaMax());

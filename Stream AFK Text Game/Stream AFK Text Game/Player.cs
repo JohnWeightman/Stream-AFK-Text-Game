@@ -355,6 +355,18 @@ namespace Stream_AFK_Text_Game
                 case "con":
                     ConsoleInputCon(Arg);
                     break;
+                case "sta":
+                    ConsoleInputStamina(Arg);
+                    break;
+                case "stamax":
+                    ConsoleInputStaminaMax(Arg);
+                    break;
+                case "hp":
+                    ConsoleInputHP(Arg);
+                    break;
+                case "hpmax":
+                    ConsoleInputMaxHP(Arg);
+                    break;
                 default:
                     Debug.Log("Player -> Invalid Stat - " + Stat);
                     break;
@@ -405,6 +417,62 @@ namespace Stream_AFK_Text_Game
             {
                 Debug.Log("Unable to set Player 'Con' to " + Arg);
                 Debug.Log("Player 'Con' Range -> -30-30");
+            }
+        }
+
+        void ConsoleInputStamina(int Arg)
+        {
+            if (Arg >= 0 && Arg <= StaminaMax)
+            {
+                Stamina = Arg;
+                Debug.Log("Player 'Stamina' set to " + Stamina);
+            }
+            else
+            {
+                Debug.Log("Unable to set Player 'Stamina' to " + Arg);
+                Debug.Log("Player 'Stamina' Range -> 0-" + StaminaMax);
+            }
+        }
+
+        void ConsoleInputStaminaMax(int Arg)
+        {
+            if (Arg >= 0 && Arg <= 9999)
+            {
+                StaminaMax = Arg;
+                Debug.Log("Player 'StaminaMax' set to " + StaminaMax);
+            }
+            else
+            {
+                Debug.Log("Unable to set Player 'StaminaMax' to " + Arg);
+                Debug.Log("Player 'StaminaMax' Range -> 0-9999");
+            }
+        }
+
+        void ConsoleInputHP(int Arg)
+        {
+            if (Arg >= 0 && Arg <= 9999)
+            {
+                HP = Arg;
+                Debug.Log("Player 'HP' set to " + HP);
+            }
+            else
+            {
+                Debug.Log("Unable to set Player 'HP' to " + Arg);
+                Debug.Log("Player 'HP' Range -> 0-9999");
+            }
+        }
+
+        void ConsoleInputMaxHP(int Arg)
+        {
+            if (Arg >= 0 && Arg <= 9999)
+            {
+                MaxHP = Arg;
+                Debug.Log("Player 'HPMax' set to " + MaxHP);
+            }
+            else
+            {
+                Debug.Log("Unable to set Player 'HPMax' to " + Arg);
+                Debug.Log("Player 'HPMax' Range -> 0-9999");
             }
         }
 
