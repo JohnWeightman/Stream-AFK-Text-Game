@@ -30,7 +30,7 @@ namespace Stream_AFK_Text_Game
             ChatOptions.SetVote(true);
             ChatOptions.SetTimer();
             int ChatChoice = -1;
-            while (ChatOptions.GetVote() && ChatChoice == -1)
+            while (ChatOptions.GetVote() || ChatChoice == -1)
             {
                 System.Threading.Thread.Sleep(1000);
                 ChatChoice = ChatOptions.MostVoted();
@@ -184,9 +184,14 @@ namespace Stream_AFK_Text_Game
                 Seconds -= 1;
                 if (Seconds <= 0)
                 {
-                    Timer.AutoReset = false;
-                    Vote = false;
-                    Voters.Clear();
+                    if (Debug.Stats.Voting.GetTotalVotes() > 0)
+                    {
+                        Timer.AutoReset = false;
+                        Vote = false;
+                        Voters.Clear();
+                    }
+                    else
+                        Seconds = Settings.GetVoteTimer();
                 }
                 IO.VoteTimer(Seconds);
             }

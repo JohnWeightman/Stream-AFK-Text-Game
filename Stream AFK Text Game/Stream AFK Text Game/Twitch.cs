@@ -41,7 +41,7 @@ namespace Stream_AFK_Text_Game
             SWriter = new StreamWriter(TwitchClient.GetStream());
             SWriter.WriteLine("PASS " + AuthKey);
             SWriter.WriteLine("NICK " + UserName.ToLower());
-            SWriter.WriteLine("USER " + UserName + " 8 * :" + UserName);
+            SWriter.WriteLine("USER " + UserName.ToLower() + " 8 * :" + UserName.ToLower());
             SWriter.WriteLine("JOIN #" + DisplayName.ToLower());
             SWriter.Flush();
             string Response = SReader.ReadLine();

@@ -25,6 +25,7 @@ namespace Stream_AFK_Text_Game
 
         public static void ConWinThreadStart()
         {
+            //Console.SetIn(new System.IO.StreamReader(Console.OpenStandardInput(), Console.InputEncoding, false, bufferSize: 32));
             DisplayVotingStatsLog(false);
             SetTimer();
             StreamerInput();
@@ -182,9 +183,31 @@ namespace Stream_AFK_Text_Game
 
         public static void UpdateDebugLog(string Log)
         {
-            DebugLog.Add(Log);
-            if (DebugLog.Count > 32)
-                DebugLog.RemoveAt(0);
+            if(Log.Length >= 49)
+            {
+                bool TooLong = true;
+                while (TooLong)
+                {
+                    string Temp = Log.Substring(0, 48);
+                    DebugLog.Add(Temp);
+                    if (DebugLog.Count > 32)
+                        DebugLog.RemoveAt(0);
+                    Log = Log.Substring(48, Log.Length - 48);
+                    if(Log.Length < 49)
+                    {
+                        DebugLog.Add(Log);
+                        if (DebugLog.Count > 32)
+                            DebugLog.RemoveAt(0);
+                        TooLong = !TooLong;
+                    }
+                }
+            }
+            else
+            {
+                DebugLog.Add(Log);
+                if (DebugLog.Count > 32)
+                    DebugLog.RemoveAt(0);
+            }
             if (!UDDebugLog)
                 UDDebugLog = true;
         }
@@ -201,7 +224,7 @@ namespace Stream_AFK_Text_Game
                 Console.Write("Input: ");
                 string Input = Console.ReadLine();
                 if(Input != "")
-                    FunctionCall(Input);
+                    FunctionCall(Input.ToLower());
                 Console.SetCursorPosition(58, 48);
                 Console.Write("                                        ");
             }
@@ -266,7 +289,7 @@ namespace Stream_AFK_Text_Game
             string ArgStr = "";
             try
             {
-                MethodCall = Input.Substring(0, Pos).ToLower();
+                MethodCall = Input.Substring(0, Pos);
                 if(Check - Pos != 1)
                 {
                     ArgStr = GetStringArg(Input);
@@ -345,7 +368,7 @@ namespace Stream_AFK_Text_Game
         {
             DebugLog.Clear();
             for(int x = 1; x < 50; x++)
-                for(int y = 17; y < 33; y++)
+                for(int y = 17; y < 49; y++)
                 {
                     Console.SetCursorPosition(x, y);
                     Console.Write(" ");
@@ -371,8 +394,14 @@ namespace Stream_AFK_Text_Game
 
         static void ResetConsole()
         {
-            ClearAllLogs();
+            Console.Clear();
             DrawGUI();
+            Console.SetCursorPosition(51, 48);
+            Console.Write("Input: ");
+            Console.SetCursorPosition(58, 48);
+            UDDebugLog = true;
+            UDStatsLog = true;
+            UDTwitchLog = true;
         }
 
         static void SetRefreshTimer(int Arg)
@@ -434,7 +463,7 @@ namespace Stream_AFK_Text_Game
                 Debug.Environment("GAME PAUSED");
             }
             else
-                Debug.Log("Game already Running");
+                Debug.Log("Game already Paused");
         }
 
         static void ResumeGame()
@@ -445,7 +474,7 @@ namespace Stream_AFK_Text_Game
                 Debug.Environment("GAME RESUMED");
             }
             else
-                Debug.Log("Game already Paused");
+                Debug.Log("Game already Running");
         }
 
         #endregion

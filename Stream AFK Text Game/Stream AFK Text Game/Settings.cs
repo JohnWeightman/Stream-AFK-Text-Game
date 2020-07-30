@@ -88,6 +88,7 @@ namespace Stream_AFK_Text_Game
         {
             Stream Stream = new FileStream("Default Settings.dat", FileMode.Open, FileAccess.Read);
             SettingsObj = (SerialSettings)Formatter.Deserialize(Stream);
+            SaveSettingsToFile();
             Stream.Close();
         }
 

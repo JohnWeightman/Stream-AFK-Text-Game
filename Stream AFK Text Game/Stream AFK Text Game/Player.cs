@@ -381,6 +381,7 @@ namespace Stream_AFK_Text_Game
                 UpdateAbilityModifiers();
                 SetAtkBonus();
                 Debug.Log("Player 'Str' set to " + Str);
+                IO.PlayerStr(Str, StrMod);
             }
             else
             {
@@ -397,6 +398,7 @@ namespace Stream_AFK_Text_Game
                 UpdateAbilityModifiers();
                 UpdatePlayerAC();
                 Debug.Log("Player 'Dex' set to " + Dex);
+                IO.PlayerDex(Dex, DexMod);
             }
             else
             {
@@ -412,6 +414,7 @@ namespace Stream_AFK_Text_Game
                 Con = Arg;
                 UpdateAbilityModifiers();
                 Debug.Log("Player 'Con' set to " + Con);
+                IO.PlayerCon(Con, ConMod);
             }
             else
             {
@@ -426,6 +429,7 @@ namespace Stream_AFK_Text_Game
             {
                 Stamina = Arg;
                 Debug.Log("Player 'Stamina' set to " + Stamina);
+                IO.PlayerStamina(Stamina, StaminaMax);
             }
             else
             {
@@ -440,6 +444,7 @@ namespace Stream_AFK_Text_Game
             {
                 StaminaMax = Arg;
                 Debug.Log("Player 'StaminaMax' set to " + StaminaMax);
+                IO.PlayerStamina(Stamina, StaminaMax);
             }
             else
             {
@@ -454,6 +459,7 @@ namespace Stream_AFK_Text_Game
             {
                 HP = Arg;
                 Debug.Log("Player 'HP' set to " + HP);
+                IO.PlayerHP(HP, MaxHP);
             }
             else
             {
@@ -468,6 +474,7 @@ namespace Stream_AFK_Text_Game
             {
                 MaxHP = Arg;
                 Debug.Log("Player 'HPMax' set to " + MaxHP);
+                IO.PlayerHP(HP, MaxHP);
             }
             else
             {
