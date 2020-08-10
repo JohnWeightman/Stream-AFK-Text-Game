@@ -25,7 +25,6 @@ namespace Stream_AFK_Text_Game
 
         public static void ConWinThreadStart()
         {
-            //Console.SetIn(new System.IO.StreamReader(Console.OpenStandardInput(), Console.InputEncoding, false, bufferSize: 32));
             DisplayVotingStatsLog(false);
             SetTimer();
             StreamerInput();
@@ -222,13 +221,70 @@ namespace Stream_AFK_Text_Game
             {
                 Console.SetCursorPosition(51, 48);
                 Console.Write("Input: ");
-                string Input = Console.ReadLine();
-                if(Input != "")
+                string Input = GetUserCommand();//Console.ReadLine();
+                if (Input != "")
                     FunctionCall(Input.ToLower());
                 Console.SetCursorPosition(58, 48);
                 Console.Write("                                        ");
             }
         }
+
+        #region Keyboard Input
+
+        static string GetUserCommand()
+        {
+            Char[] Chars = new char[32];
+            ConsoleKeyInfo Key;
+            int KeyNumber = 0;
+            bool Done = false;
+            while (!Done)
+            {
+                if (KeyNumber < Chars.Length)
+                    Key = Console.ReadKey();
+                else
+                    Key = Console.ReadKey(true);
+                switch (Key.Key)
+                {
+                    case ConsoleKey.Enter:
+                        Done = !Done;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        break;
+                    case ConsoleKey.RightArrow:
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        break;
+                    case ConsoleKey.UpArrow:
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        break;
+                    case ConsoleKey.Backspace:
+                        if (KeyNumber > 0)
+                        {
+                            KeyNumber -= 1;
+                            Chars[KeyNumber] = ' ';
+                            Console.Write(" ");
+                            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        }
+                        else
+                            Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                        break;
+                    default:
+                        if (KeyNumber < Chars.Length)
+                        {
+                            Chars[KeyNumber] = Key.KeyChar;
+                            KeyNumber += 1;
+                        }
+                        break;
+                }
+                Debug.Log(new string(Chars));
+            }
+            return new string(Chars);
+        }
+
+        #endregion
 
         #region Check Arguments
 
