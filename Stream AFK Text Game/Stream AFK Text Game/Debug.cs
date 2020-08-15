@@ -19,6 +19,11 @@ namespace Stream_AFK_Text_Game
         {
             ConWin.UpdateDebugLog("Environment: " + LogText);
         }
+
+        public static void WG(string LogText)
+        {
+            ConWin.UpdateDebugLog("WG: " + LogText);
+        }
     }
 
     class Stats

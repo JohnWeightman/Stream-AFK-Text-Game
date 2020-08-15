@@ -17,6 +17,7 @@ namespace Stream_AFK_Text_Game
 
         public static void LoadGameObjects()
         {
+            ClearGameObjects();
             XmlDocument Doc = new XmlDocument();
             Doc.Load("GameObjects.xml");
             foreach (XmlNode Node in Doc.DocumentElement)
@@ -103,6 +104,14 @@ namespace Stream_AFK_Text_Game
                         NPCs.Add(NPC);
                 }
             }
+        }
+
+        static void ClearGameObjects()
+        {
+            NPCs.Clear();
+            Weapons.Clear();
+            Armour.Clear();
+            Potions.Clear();
         }
     }
 

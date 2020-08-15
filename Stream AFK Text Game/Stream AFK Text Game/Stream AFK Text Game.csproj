@@ -50,9 +50,11 @@
     <Compile Include="IO.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="MainClass.cs" />
+    <Compile Include="ProGen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Twitch.cs" />
+    <Compile Include="WorldAndEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
