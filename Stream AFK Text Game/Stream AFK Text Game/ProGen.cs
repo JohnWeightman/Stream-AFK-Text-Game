@@ -10,16 +10,16 @@ namespace Stream_AFK_Text_Game
     static class ProGen
     {
         static List<Adventures> AdventureTypes = new List<Adventures>();
+        static List<Stores> StoreTypes = new List<Stores>();
 
         public static Campaign GenerateNewAdventure()
         {
-            Campaign Campaign = new Campaign();
             Debug.WG("Loading Generation Objects...");
             LoadGenerationData();
             Debug.WG("Loading Game Objects...");
             GameObjects.LoadGameObjects();
             Debug.WG("Generating World...");
-            Campaign = GenerateCampaignWorld(Campaign);
+            Campaign Campaign = new Campaign();
             return Campaign;
         }
 
@@ -37,6 +37,9 @@ namespace Stream_AFK_Text_Game
                     case "AdventureType":
                         LoadAdventureType(Node);
                         break;
+                    case "StoreTypes":
+                        LoadStoreTypes(Node);
+                        break;
                     default:
                         Debug.Log("XML ERROR -> 'GenerationObjects.xml, Node: " + Node.Name);
                         break;
@@ -47,6 +50,7 @@ namespace Stream_AFK_Text_Game
         static void ClearGenerationData()
         {
             AdventureTypes.Clear();
+            StoreTypes.Clear();
         }
 
         static void LoadAdventureType(XmlNode Node)
@@ -64,21 +68,74 @@ namespace Stream_AFK_Text_Game
                 AdventureTypes.Add(AdType);
         }
 
+        static void LoadStoreTypes(XmlNode Node)
+        {
+            int Count = 0;
+            int ChildCount = Convert.ToInt32(Node.Attributes[0].Value);
+            Stores[] StTypes = new Stores[ChildCount];
+            foreach(XmlNode Child in Node.ChildNodes)
+            {
+                StTypes[Count] = new Stores();
+                StTypes[Count].SetType(Child.Name);
+                Count++;
+            }
+        }
+
         #endregion
 
         #region Generate Adventure
 
-        static Campaign GenerateCampaignWorld(Campaign Campaign)
+        public static List<Cities> GenerateCities()
         {
-            Debug.WG("Generating World -> Cities...");
-            Campaign = GenerateCities(Campaign);
-            return Campaign;
+            List<Cities> CityList = new List<Cities>();
+            int CityCount = DiceRoller.RandomRange(3, 5);
+            Cities[] Temp = new Cities[CityCount];
+            for (int Count = 0; Count < CityCount; Count++)
+            {
+                Temp[Count] = new Cities();
+            }
+            foreach (Cities City in Temp)
+                CityList.Add(City);
+            return CityList;
         }
 
-        static Campaign GenerateCities(Campaign Campaign)
+        public static List<Stores> GenerateShops()
         {
-            int CityCount = DiceRoller.RandomRange(3, 5);
-            return Campaign;
+            List<Stores> StoreList = new List<Stores>();
+            return StoreList;
+        }
+
+        #endregion
+
+        #region Generation Tools
+
+        public static string NameGenerator(string Arg)
+        {
+            string Name = "";
+            string[] consonants = { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w", "x" };
+            string[] vowels = { "a", "e", "i", "o", "u", "ae", "y" };
+            Name += consonants[DiceRoller.RollDice(consonants.Length - 1)].ToUpper();
+            Name += vowels[DiceRoller.RollDice(vowels.Length - 1)];
+            int Length = DiceRoller.RollDice(6) + 2;
+            int LetterCount = 2;
+            while (LetterCount < Length)
+            {
+                Name += consonants[DiceRoller.RollDice(consonants.Length - 1)];
+                LetterCount++;
+                Name += vowels[DiceRoller.RollDice(vowels.Length - 1)];
+                LetterCount++;
+            }
+            switch (Arg)
+            {
+                case "City":
+                    return Name;
+                case "":
+                    break;
+                default:
+                    Debug.Log("Name Generation Error -> Arg: " + Arg);
+                    return Name;
+            }
+            return Name;
         }
 
         #endregion

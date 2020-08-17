@@ -9,7 +9,6 @@ namespace Stream_AFK_Text_Game
     {
         public static Player Player = new Player();
         public static ChatOptions ChatOptions = new ChatOptions();
-        static Campaign Campaign = new Campaign();
 
         static void Main(string[] args)
         {
@@ -57,7 +56,7 @@ namespace Stream_AFK_Text_Game
             Debug.Environment("Resetting Files...");
             IO.ResetFiles(Player);
             Debug.Environment("Starting World Generator...");
-            Campaign = ProGen.GenerateNewAdventure();
+            Campaign Campaign = ProGen.GenerateNewAdventure();
             Twitch.WriteToChat("Type '!' and the number of the option you wish to vote for!");
             System.Threading.Thread.Sleep(Settings.GetPauseTime());
             while (!Player.GetDead())
