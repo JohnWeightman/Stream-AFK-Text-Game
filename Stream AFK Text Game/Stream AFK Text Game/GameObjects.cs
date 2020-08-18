@@ -13,7 +13,7 @@ namespace Stream_AFK_Text_Game
         public static List<EnemyNPC> NPCs = new List<EnemyNPC>();
         public static List<Weapon> Weapons = new List<Weapon>();
         public static List<Armour> Armour = new List<Armour>();
-        public static List<Potions> Potions = new List<Potions>();
+        public static List<Potion> Potions = new List<Potion>();
 
         public static void LoadGameObjects()
         {
@@ -61,16 +61,16 @@ namespace Stream_AFK_Text_Game
                 {
                     int Count = 0;
                     int ChildCount = Convert.ToInt32(Node.Attributes[0].Value);
-                    Potions[] PotTemp = new Potions[ChildCount];
+                    Potion[] PotTemp = new Potion[ChildCount];
                     foreach (XmlNode Child in Node.ChildNodes)
                     {
-                        PotTemp[Count] = new Potions();
+                        PotTemp[Count] = new Potion();
                         PotTemp[Count].Name = Child.Attributes[0].Value;
                         PotTemp[Count].DiceNum = Convert.ToInt32(Child.Attributes[1].Value);
                         PotTemp[Count].DiceSize = Convert.ToInt32(Child.Attributes[2].Value);
                         PotTemp[Count].Modifier = Convert.ToInt32(Child.Attributes[3].Value);
                     }
-                    foreach (Potions Potion in PotTemp)
+                    foreach (Potion Potion in PotTemp)
                         Potions.Add(Potion);
                 }
                 else if (Node.Name == "Enemies")
@@ -227,7 +227,7 @@ namespace Stream_AFK_Text_Game
         }
     }
 
-    class Potions
+    class Potion
     {
         public string Name;
         public int DiceNum, DiceSize, Modifier, Cost;

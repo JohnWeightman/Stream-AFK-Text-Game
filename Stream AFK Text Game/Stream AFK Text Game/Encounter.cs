@@ -289,7 +289,7 @@ namespace Stream_AFK_Text_Game
             if(Player.Inventory.Potions.Count > 0)
             {
                 List<string> Potions = new List<string>();
-                foreach (Potions Pot in Player.Inventory.Potions)
+                foreach (Potion Pot in Player.Inventory.Potions)
                     Potions.Add(Pot.Name);
                 IO.Options(Potions);
                 int Input = MainClass.ChatInput(4);

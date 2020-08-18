@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Stream_AFK_Text_Game
 {
@@ -8,11 +9,32 @@ namespace Stream_AFK_Text_Game
     {
         public static Stats Stats = new Stats();
         static int LogNumber;
+        static string DebugPath;
+
+        public static void CreateDebugFile()
+        {
+            int FileCount = Directory.GetFiles("Debug", "*", SearchOption.TopDirectoryOnly).Length + 1;
+            string Output = "**************************************************\n\nDEBUG LOG #" + FileCount + "\n" + DateTime.Now.ToString() +
+                "\n\n**************************************************\n\n";
+            DebugPath = "Debug\\Debug Log #" + FileCount + ".txt";
+            File.WriteAllText(DebugPath, Output);
+        }
+
+        static void UpdateDebugFile(string LogText)
+        {
+            using (StreamWriter SW = File.AppendText(DebugPath))
+            {
+                SW.WriteLine(LogText);
+            }
+        }
 
         public static void Log(string LogText)
         {
             LogNumber += 1;
+            if (LogNumber == 1)
+                CreateDebugFile();
             ConWin.UpdateDebugLog("Debug.Log #" + LogNumber + ": " + LogText);
+            UpdateDebugFile("Debug.Log #" + LogNumber + ": " + LogText);
         }
 
         public static void Environment(string LogText)

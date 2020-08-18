@@ -226,7 +226,7 @@ namespace Stream_AFK_Text_Game
         public static void PlayerInventory(Inventorys Inventory)
         {
             string PotString = "";
-            foreach (Potions Potion in Inventory.Potions)
+            foreach (Potion Potion in Inventory.Potions)
                 PotString += Potion.Name + "\n";
             File.WriteAllText("Stream Files\\Player\\2. Equipment\\3. Inventory\\Inventory.txt", PotString);
         }

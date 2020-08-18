@@ -488,7 +488,7 @@ namespace Stream_AFK_Text_Game
 
     class Inventorys
     {
-        public List<Potions> Potions = new List<Potions>();
+        public List<Potion> Potions = new List<Potion>();
         int MaxItems = 10;
         int CurrentItems = 0;
 
