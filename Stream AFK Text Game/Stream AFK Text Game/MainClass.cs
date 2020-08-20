@@ -17,6 +17,13 @@ namespace Stream_AFK_Text_Game
             IO.Options(null);
             Debug.Environment("Loading Settings...");
             Settings.LoadSettingsFromFile();
+
+
+
+            Campaign Campaign = ProGen.GenerateNewAdventure();
+
+
+
             System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
             System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
             GameThread.Start();

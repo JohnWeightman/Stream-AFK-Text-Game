@@ -9,6 +9,7 @@ namespace Stream_AFK_Text_Game
 {
     static class ProGen
     {
+        static Names Names;
         static List<Adventures> AdventureTypes = new List<Adventures>();
         static List<Stores> StoreTypes = new List<Stores>();
 
@@ -23,6 +24,7 @@ namespace Stream_AFK_Text_Game
 
         public static Campaign GenerateNewAdventure()
         {
+            Names = new Names();
             Debug.WG("Loading Game Objects...");
             GameObjects.LoadGameObjects();
             Debug.WG("Loading Generation Objects...");
@@ -49,6 +51,9 @@ namespace Stream_AFK_Text_Game
                     case "StoreTypes":
                         LoadStoreTypes(Node);
                         break;
+                    case "NameTypes":
+                        LoadNameTypes(Node);
+                        break;
                     default:
                         Debug.Log("XML ERROR -> 'GenerationObjects.xml, Node: " + Node.Name);
                         break;
@@ -60,12 +65,15 @@ namespace Stream_AFK_Text_Game
         {
             AdventureTypes.Clear();
             StoreTypes.Clear();
+            Names.ClearNames();
         }
+
+        #region Adventures
 
         static void LoadAdventureType(XmlNode Node)
         {
             int Count = 0;
-            int ChildCount = Convert.ToInt32(Node.Attributes[0].Value);
+            int ChildCount = Node.ChildNodes.Count;
             Adventures[] AdTypes = new Adventures[ChildCount];
             foreach (XmlNode Child in Node.ChildNodes)
             {
@@ -77,12 +85,14 @@ namespace Stream_AFK_Text_Game
                 AdventureTypes.Add(AdType);
         }
 
+        #endregion
+
         #region Stores
 
         static void LoadStoreTypes(XmlNode Node)
         {
             int Count = 0;
-            int ChildCount = Convert.ToInt32(Node.Attributes[0].Value);
+            int ChildCount = Node.ChildNodes.Count;
             Stores[] StTypes = new Stores[ChildCount];
             foreach(XmlNode StoreType in Node.ChildNodes)
             {
@@ -106,12 +116,12 @@ namespace Stream_AFK_Text_Game
                 StoreTypes.Add(StType);
         }
 
-        static void LoadStoreStock(XmlNode Stock, Stores Store,string ErMsg)
+        static void LoadStoreStock(XmlNode Stock, Stores Store, string ErMsg)
         {
             foreach(XmlNode StockType in Stock)
             {
                 int Count = 0;
-                int ChildCount = Convert.ToInt32(StockType.Attributes[0].Value);
+                int ChildCount = StockType.ChildNodes.Count;
                 switch (StockType.Name)
                 {
                     case "Weapons":
@@ -125,7 +135,7 @@ namespace Stream_AFK_Text_Game
                                     WeapTemp[Count] = GOWeapon;
                                     break;
                                 }
-                            WeapTemp[Count].Cost = Convert.ToInt32(Weapon.Attributes[0].Value);
+                            WeapTemp[Count].Cost = Weapon.ChildNodes.Count;
                             Count++;
                         }
                         foreach (Weapon Weapon in WeapTemp)
@@ -142,7 +152,7 @@ namespace Stream_AFK_Text_Game
                                     ArmTemp[Count] = GOArmour;
                                     break;
                                 }
-                            ArmTemp[Count].Cost = Convert.ToInt32(Armour.Attributes[0].Value);
+                            ArmTemp[Count].Cost = Armour.ChildNodes.Count;
                             Count++;
                         }
                         foreach (Armour Armour in ArmTemp)
@@ -158,7 +168,7 @@ namespace Stream_AFK_Text_Game
                                 {
                                     PotTemp[Count] = GOPotions;
                                 }
-                            PotTemp[Count].Cost = Convert.ToInt32(Potion.Attributes[0].Value);
+                            PotTemp[Count].Cost = Potion.ChildNodes.Count;
                             Count++;
                         }
                         foreach (Potion Potion in PotTemp)
@@ -166,6 +176,51 @@ namespace Stream_AFK_Text_Game
                         break;
                     default:
                         Debug.Log(ErMsg + " - " + StockType.Name);
+                        break;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Names
+
+        static void LoadNameTypes(XmlNode Node)
+        {
+            foreach(XmlNode NameType in Node)
+            {
+                switch (NameType.Name)
+                {
+                    case "Stores":
+                        LoadStoreNames(NameType, "XML ERROR -> 'GenerationObjects.xml, Node: " + Node.Name + " - " + NameType.Name);
+                        break;
+                    default:
+                        Debug.Log("XML ERROR -> 'GenerationObjects.xml, Node: " + Node.Name + " - " + NameType.Name);
+                        break;
+                }
+            }
+        }
+
+        static void LoadStoreNames(XmlNode Stores, string ErMsg)
+        {
+            foreach(XmlNode Store in Stores)
+            {
+                switch (Store.Name)
+                {
+                    case "BlackSmith":
+                        for (int x = 0; x < Store.Attributes.Count; x++)
+                            Names.AddToBlackSmith(Store.Attributes[x].Value);
+                        break;
+                    case "Armourer":
+                        for (int x = 0; x < Store.Attributes.Count; x++)
+                            Names.AddToArmourer(Store.Attributes[x].Value);
+                        break;
+                    case "PotionBrewer":
+                        for (int x = 0; x < Store.Attributes.Count; x++)
+                            Names.AddToPotionBrewer(Store.Attributes[x].Value);
+                        break;
+                    default:
+                        Debug.Log(ErMsg + " - " + Store.Name);
                         break;
                 }
             }
@@ -238,11 +293,23 @@ namespace Stream_AFK_Text_Game
             return SType;
         }
 
+        public static List<NPCS> GenerateNPCS(int NPCNumber)
+        {
+            List<NPCS> NPCS = new List<NPCS>();
+            NPCS[] Temp = new NPCS[NPCNumber];
+            for(int x = 0; x < NPCNumber; x++)
+            {
+                Temp[x] = new NPCS();
+                NPCS.Add(Temp[x]);
+            }
+            return NPCS;
+        }
+
         #endregion
 
         #region Generation Tools
 
-        public static string NameGenerator(string Arg)
+        public static string NameGenerator(string Arg, string NPCName)
         {
             string Name = "";
             string[] consonants = { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w", "x" };
@@ -260,15 +327,119 @@ namespace Stream_AFK_Text_Game
             }
             switch (Arg)
             {
-                case "City":
+                case null:
                     return Name;
-                case "":
+                case "City":
+                    return "City of " + Name;
+                case "BlackSmith":
+                    Name = EditName(Name, Names.GetFromBlackSmith(DiceRoller.RandomRange(0, Names.GetCountBlackSmith() - 1)));
+                    break;
+                case "Armourer":
+                    Name = EditName(Name, Names.GetFromArmourer(DiceRoller.RandomRange(0, Names.GetCountArmourer() - 1)));
+                    break;
+                case "PotionBrewer":
+                    Name = EditName(Name, Names.GetFromPotionBrewer(DiceRoller.RandomRange(0, Names.GetCountPotionBrewer() - 1)));
                     break;
                 default:
                     Debug.Log("Name Generation Error -> Arg: " + Arg);
-                    return Name;
+                    break;
             }
             return Name;
+        }
+
+        static string EditName(string Name, string Extra)
+        {
+            if(Extra.Contains("*****"))
+            {
+                Extra = Extra.Replace("*****", "'s");
+                Name = Name + Extra;
+            }
+            else
+            {
+                Name = Extra;
+            }
+            return Name;
+        }
+
+        #endregion
+    }
+
+    class Names
+    {
+        List<string> BlackSmith = new List<string>();
+        List<string> Armourer = new List<string>();
+        List<string> PotionBrewer = new List<string>();
+
+        #region Get/Set Functions
+
+        public void AddToBlackSmith(string Name)
+        {
+            BlackSmith.Add(Name);
+        }
+
+        public string GetFromBlackSmith(int Arg)
+        {
+            if (Arg >= 0 && Arg < BlackSmith.Count)
+                return BlackSmith[Arg];
+            else
+            {
+                Debug.Log("Blacksmith Name Generation Error -> Arg: " + Arg);
+                return "Brammer's Hammers";
+            }
+        }
+
+        public int GetCountBlackSmith()
+        {
+            return BlackSmith.Count;
+        }
+
+        public void AddToArmourer(string Name)
+        {
+            Armourer.Add(Name);
+        }
+
+        public string GetFromArmourer(int Arg)
+        {
+            if (Arg >= 0 && Arg < Armourer.Count)
+                return Armourer[Arg];
+            else
+            {
+                Debug.Log("Armourer Name Generation Error -> Arg: " + Arg);
+                return "Kilder's Armoury";
+            }
+        }
+
+        public int GetCountArmourer()
+        {
+            return Armourer.Count;
+        }
+
+        public void AddToPotionBrewer(string Name)
+        {
+            PotionBrewer.Add(Name);
+        }
+
+        public string GetFromPotionBrewer(int Arg)
+        {
+            if (Arg >= 0 && Arg < PotionBrewer.Count)
+                return PotionBrewer[Arg];
+            else
+            {
+                Debug.Log("Armourer Name Generation Error -> Arg: " + Arg);
+                return "Ruby's Potions";
+            }
+        }
+
+        public int GetCountPotionBrewer()
+        {
+            return PotionBrewer.Count;
+        }
+
+        public void ClearNames()
+        {
+            BlackSmith.Clear();
+            Armourer.Clear();
+            PotionBrewer.Clear();
         }
 
         #endregion

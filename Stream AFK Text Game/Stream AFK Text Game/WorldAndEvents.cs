@@ -36,12 +36,14 @@ namespace Stream_AFK_Text_Game
     class Cities
     {
         string Name;
+        Tavern Tavern;
         List<Stores> Stores = new List<Stores>();
 
         public Cities()
         {
-            Name = ProGen.NameGenerator("City");
+            Name = ProGen.NameGenerator("City", null);
             Stores = ProGen.GenerateStores();
+            Tavern = new Tavern();
         }
 
         #region Get/Set Functions
@@ -80,18 +82,58 @@ namespace Stream_AFK_Text_Game
         #endregion//set, clear, add, remove
     }
 
+    class Tavern
+    {
+        string Name;
+        NPCS BarKeep;
+        List<NPCS> Patrons = new List<NPCS>();
+
+        public Tavern()
+        {
+            Name = ProGen.NameGenerator(null, null);
+            BarKeep = new NPCS();
+            Patrons = ProGen.GenerateNPCS(DiceRoller.RandomRange(2, 5));
+        }
+
+        #region Get/Set Functions
+
+        public void SetName(string NewName)
+        {
+            Name = NewName;
+        }
+
+        public string GetName()
+        {
+            return Name;
+        }
+
+        public void SetBarKeep(NPCS NewBarKeep)
+        {
+            BarKeep = NewBarKeep;
+        }
+
+        public NPCS GetBarKeep()
+        {
+            return BarKeep;
+        }
+
+        #endregion
+    }
+
     class Stores
     {
         string Name, SType;
+        NPCS ShopKeep;
         List<Weapon> WeaponStock = new List<Weapon>();
         List<Armour> ArmourStock = new List<Armour>();
         List<Potion> PotionStock = new List<Potion>();
 
         public Stores()
         {
-            Name = ProGen.NameGenerator("");
             SType = ProGen.GenerateStoreType();
-            foreach(Stores Store in ProGen.GetStoreTypes())
+            ShopKeep = new NPCS();
+            Name = ProGen.NameGenerator(SType, ShopKeep.GetName());
+            foreach (Stores Store in ProGen.GetStoreTypes())
                 if(Store.SType == SType)
                 {
                     WeaponStock = Store.GetWeaponStock();
@@ -198,6 +240,40 @@ namespace Stream_AFK_Text_Game
         public List<Potion> GetPotionStock()
         {
             return PotionStock;
+        }
+
+        public void SetNPC(NPCS NewNPC)
+        {
+            ShopKeep = NewNPC;
+        }
+
+        public NPCS GetNPC()
+        {
+            return ShopKeep;
+        }
+
+        #endregion
+    }
+
+    class NPCS
+    {
+        string Name;
+
+        public NPCS()
+        {
+            Name = ProGen.NameGenerator(null, null);
+        }
+
+        #region Get/Set Functions
+
+        public void SetName(string NewName)
+        {
+            Name = NewName;
+        }
+
+        public string GetName()
+        {
+            return Name;
         }
 
         #endregion
