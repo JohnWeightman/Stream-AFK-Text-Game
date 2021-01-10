@@ -279,9 +279,15 @@ namespace Stream_AFK_Text_Game
                         }
                         break;
                 }
-                Debug.Log(new string(Chars));
             }
-            return new string(Chars);
+            sbyte Count = 0;
+            foreach (char Cha in Chars)
+                if (Cha == ')')
+                    break;
+                else
+                    Count++;
+            string Input = new string(Chars).Substring(0, Count + 1);
+            return Input;
         }
 
         #endregion
@@ -357,8 +363,6 @@ namespace Stream_AFK_Text_Game
                 Debug.Log("Invalid Input -> " + Input);
                 return;
             }
-
-
             switch (MethodCall)
             {
                 case "setvotetimer":

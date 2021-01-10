@@ -16,14 +16,7 @@ namespace Stream_AFK_Text_Game
             IO.GameUpdate("Game Starting...");
             IO.Options(null);
             Debug.Environment("Loading Settings...");
-            Settings.LoadSettingsFromFile();
-
-
-
-            Campaign Campaign = ProGen.GenerateNewAdventure();
-
-
-
+            Settings.LoadSettingsFromFile();           
             System.Threading.Thread GameThread = new System.Threading.Thread(new System.Threading.ThreadStart(GameThreadStart));
             System.Threading.Thread ConWinThread = new System.Threading.Thread(new System.Threading.ThreadStart(ConWin.ConWinThreadStart));
             GameThread.Start();
@@ -50,8 +43,6 @@ namespace Stream_AFK_Text_Game
             Debug.Environment("Starting Twitch Client...");
             Twitch.LaunchConnection();
             System.Threading.Thread.Sleep(5000);
-            //Debug.Environment("Loading GameObjects...");
-            //GameObjects.LoadGameObjects();
             GameLoop();
         }
 
@@ -68,8 +59,8 @@ namespace Stream_AFK_Text_Game
             System.Threading.Thread.Sleep(Settings.GetPauseTime());
             while (!Player.GetDead())
             {
-                List<EnemyNPC> Temp = SelectEnemies();
-                Encounter.StartEncounter(Temp, Player);
+                //List<EnemyNPC> Temp = SelectEnemies();
+                //Encounter.StartEncounter(Temp, Player);
             }
             IO.GameUpdate("YOU DIED");
             System.Threading.Thread.Sleep(Settings.GetPauseTime());

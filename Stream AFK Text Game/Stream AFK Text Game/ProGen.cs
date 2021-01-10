@@ -9,6 +9,7 @@ namespace Stream_AFK_Text_Game
 {
     static class ProGen
     {
+        static bool DataLoaded = false;
         static Names Names;
         static List<Adventures> AdventureTypes = new List<Adventures>();
         static List<Stores> StoreTypes = new List<Stores>();
@@ -59,6 +60,7 @@ namespace Stream_AFK_Text_Game
                         break;
                 }
             }
+            DataLoaded = true;
         }
 
         static void ClearGenerationData()
@@ -231,6 +233,20 @@ namespace Stream_AFK_Text_Game
         #endregion
 
         #region Generate Adventure
+
+        public static Adventures GenerateAdventure()
+        {
+            Adventures Adventure = new Adventures();
+            return Adventure;
+        }
+
+        public static string GenerateAdventureType()
+        {
+            if (DataLoaded)
+                return AdventureTypes[DiceRoller.RollDice(AdventureTypes.Count) - 1].GetAdventureType();
+            else
+                return null;
+        }
 
         public static List<Cities> GenerateCities()
         {

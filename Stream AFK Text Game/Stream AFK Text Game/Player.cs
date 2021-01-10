@@ -380,13 +380,13 @@ namespace Stream_AFK_Text_Game
                 Str = Arg;
                 UpdateAbilityModifiers();
                 SetAtkBonus();
-                Debug.Log("Player 'Str' set to " + Str);
+                Debug.Environment("Player 'Str' set to " + Str);
                 IO.PlayerStr(Str, StrMod);
             }
             else
             {
-                Debug.Log("Unable to set Player 'Str' to " + Arg);
-                Debug.Log("Player 'Str' Range -> -30-30");
+                Debug.Environment("Unable to set Player 'Str' to " + Arg);
+                Debug.Environment("Player 'Str' Range -> -30-30");
             }
         }
 
@@ -397,13 +397,13 @@ namespace Stream_AFK_Text_Game
                 Dex = Arg;
                 UpdateAbilityModifiers();
                 UpdatePlayerAC();
-                Debug.Log("Player 'Dex' set to " + Dex);
+                Debug.Environment("Player 'Dex' set to " + Dex);
                 IO.PlayerDex(Dex, DexMod);
             }
             else
             {
-                Debug.Log("Unable to set Player 'Dex' to " + Arg);
-                Debug.Log("Player 'Dex' Range -> -30-30");
+                Debug.Environment("Unable to set Player 'Dex' to " + Arg);
+                Debug.Environment("Player 'Dex' Range -> -30-30");
             }
         }
 
@@ -413,13 +413,13 @@ namespace Stream_AFK_Text_Game
             {
                 Con = Arg;
                 UpdateAbilityModifiers();
-                Debug.Log("Player 'Con' set to " + Con);
+                Debug.Environment("Player 'Con' set to " + Con);
                 IO.PlayerCon(Con, ConMod);
             }
             else
             {
-                Debug.Log("Unable to set Player 'Con' to " + Arg);
-                Debug.Log("Player 'Con' Range -> -30-30");
+                Debug.Environment("Unable to set Player 'Con' to " + Arg);
+                Debug.Environment("Player 'Con' Range -> -30-30");
             }
         }
 
@@ -428,13 +428,13 @@ namespace Stream_AFK_Text_Game
             if (Arg >= 0 && Arg <= StaminaMax)
             {
                 Stamina = Arg;
-                Debug.Log("Player 'Stamina' set to " + Stamina);
+                Debug.Environment("Player 'Stamina' set to " + Stamina);
                 IO.PlayerStamina(Stamina, StaminaMax);
             }
             else
             {
-                Debug.Log("Unable to set Player 'Stamina' to " + Arg);
-                Debug.Log("Player 'Stamina' Range -> 0-" + StaminaMax);
+                Debug.Environment("Unable to set Player 'Stamina' to " + Arg);
+                Debug.Environment("Player 'Stamina' Range -> 0-" + StaminaMax);
             }
         }
 
@@ -443,13 +443,13 @@ namespace Stream_AFK_Text_Game
             if (Arg >= 0 && Arg <= 9999)
             {
                 StaminaMax = Arg;
-                Debug.Log("Player 'StaminaMax' set to " + StaminaMax);
+                Debug.Environment("Player 'StaminaMax' set to " + StaminaMax);
                 IO.PlayerStamina(Stamina, StaminaMax);
             }
             else
             {
-                Debug.Log("Unable to set Player 'StaminaMax' to " + Arg);
-                Debug.Log("Player 'StaminaMax' Range -> 0-9999");
+                Debug.Environment("Unable to set Player 'StaminaMax' to " + Arg);
+                Debug.Environment("Player 'StaminaMax' Range -> 0-9999");
             }
         }
 
@@ -458,13 +458,13 @@ namespace Stream_AFK_Text_Game
             if (Arg >= 0 && Arg <= 9999)
             {
                 HP = Arg;
-                Debug.Log("Player 'HP' set to " + HP);
+                Debug.Environment("Player 'HP' set to " + HP);
                 IO.PlayerHP(HP, MaxHP);
             }
             else
             {
-                Debug.Log("Unable to set Player 'HP' to " + Arg);
-                Debug.Log("Player 'HP' Range -> 0-9999");
+                Debug.Environment("Unable to set Player 'HP' to " + Arg);
+                Debug.Environment("Player 'HP' Range -> 0-9999");
             }
         }
 
@@ -473,13 +473,13 @@ namespace Stream_AFK_Text_Game
             if (Arg >= 0 && Arg <= 9999)
             {
                 MaxHP = Arg;
-                Debug.Log("Player 'HPMax' set to " + MaxHP);
+                Debug.Environment("Player 'HPMax' set to " + MaxHP);
                 IO.PlayerHP(HP, MaxHP);
             }
             else
             {
-                Debug.Log("Unable to set Player 'HPMax' to " + Arg);
-                Debug.Log("Player 'HPMax' Range -> 0-9999");
+                Debug.Environment("Unable to set Player 'HPMax' to " + Arg);
+                Debug.Environment("Player 'HPMax' Range -> 0-9999");
             }
         }
 

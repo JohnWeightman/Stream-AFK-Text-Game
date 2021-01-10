@@ -8,29 +8,16 @@ namespace Stream_AFK_Text_Game
 {
     class Campaign
     {
-        string AdventureType;
-
+        Adventures Adventure;
         List<Cities> Cities = new List<Cities>();
 
         public Campaign()
         {
             Debug.WG("Generating World -> Cities...");
             Cities = ProGen.GenerateCities();
+            Debug.WG("Generating World -> Adventure...");
+            Adventure = ProGen.GenerateAdventure();
         }
-
-        #region Get/Set Functions
-
-        public void SetAdventureType(string NewAdventureType)
-        {
-            AdventureType = NewAdventureType;
-        }
-
-        public string GetAdventureType()
-        {
-            return AdventureType;
-        }
-
-        #endregion
     }
 
     class Cities
@@ -282,6 +269,11 @@ namespace Stream_AFK_Text_Game
     class Adventures
     {
         string AdventureType;
+
+        public Adventures()
+        {
+            AdventureType = ProGen.GenerateAdventureType();
+        }
 
         #region Get/Set Functions
 
